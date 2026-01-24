@@ -17,6 +17,11 @@ public class ClientConfiguration : BaseConfiguration<Client>
             .HasColumnName("Name")
             .IsRequired();
         
+        builder.HasMany(c => c.Dependents)
+            .WithOne(d => d.Client)
+            .HasForeignKey(d=>d.Client)
+            .OnDelete(DeleteBehavior.Cascade);
+        
         builder.Property(c => c.CPF)
             .HasMaxLength(11)
             .HasConversion(
