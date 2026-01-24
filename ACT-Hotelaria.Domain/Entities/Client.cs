@@ -6,6 +6,7 @@ namespace ACT_Hotelaria.Domain.Entities;
 public sealed class Client : BaseEntity
 {
     private readonly List<Dependent> _dependents = new();
+    private readonly List<Reservation> _reservations = new();
     public string Name { get; private set; }
     public Cpf CPF { get; private set; }
     public Email Email { get; private set; }
@@ -13,6 +14,7 @@ public sealed class Client : BaseEntity
     public bool Active { get; private set; } = true;
     
     public IReadOnlyCollection<Dependent> Dependents => _dependents.AsReadOnly();
+    public IReadOnlyCollection<Reservation> Reservations => _reservations.AsReadOnly();
 
     private Client()
     {

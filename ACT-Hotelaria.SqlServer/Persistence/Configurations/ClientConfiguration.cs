@@ -11,6 +11,7 @@ public class ClientConfiguration : BaseConfiguration<Client>
     {
         base.Configure(builder);
         builder.ToTable("Clientes");
+        builder.HasIndex(c => c.CPF).IsUnique();
         
         builder.Property(c => c.Name)
             .HasMaxLength(255)
@@ -19,7 +20,12 @@ public class ClientConfiguration : BaseConfiguration<Client>
         
         builder.HasMany(c => c.Dependents)
             .WithOne(d => d.Client)
-            .HasForeignKey(d=>d.Client)
+            .HasForeignKey(d=>d.ClientId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(c => c.Reservations)
+            .WithOne(r => r.Client)
+            .HasForeignKey(r => r.ClientId)
             .OnDelete(DeleteBehavior.Cascade);
         
         builder.Property(c => c.CPF)
