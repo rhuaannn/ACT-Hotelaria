@@ -7,6 +7,9 @@ public sealed class Dependent : BaseEntity
 {
     public string Name { get; private set; }
     public Cpf CPF { get; private set; }
+    
+    public Guid ClientId { get; private set; }
+    public Client Client { get; private set; }
 
     private Dependent()
     {

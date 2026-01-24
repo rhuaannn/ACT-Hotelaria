@@ -5,14 +5,14 @@ namespace ACT_Hotelaria.Domain.Entities;
 
 public sealed class Client : BaseEntity
 {
-    private readonly List<Dependent> _dependent;
+    private readonly List<Dependent> _dependents = new();
     public string Name { get; private set; }
     public Cpf CPF { get; private set; }
     public Email Email { get; private set; }
     public Telefone Telefone { get; private set; }
     public bool Active { get; private set; } = true;
     
-    public IReadOnlyCollection<Dependent> Dependents => _dependent.AsReadOnly();
+    public IReadOnlyCollection<Dependent> Dependents => _dependents.AsReadOnly();
 
     private Client()
     {
@@ -25,7 +25,6 @@ public sealed class Client : BaseEntity
         Email = email;
         Telefone = telefone;
         Active = true;
-        _dependent = new List<Dependent>();
     }
 
     public static Client Create(string name, Cpf cpf, Email email, Telefone telefone)
@@ -35,13 +34,13 @@ public sealed class Client : BaseEntity
 
     public void AddDependent(string name, Cpf cpf)
     {
-        if (_dependent.Any(d => d.CPF.Equals(cpf)))
+        if (_dependents.Any(d => d.CPF.Equals(cpf)))
         {
             throw new ArgumentException("Dependente já cadastrado!");
         }
         
         var newDependent = Dependent.Create(name, cpf);
-        _dependent.Add(newDependent);
+        _dependents.Add(newDependent);
     }
     private bool Validate(string name)
     {
