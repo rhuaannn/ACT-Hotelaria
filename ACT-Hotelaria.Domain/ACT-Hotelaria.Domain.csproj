@@ -8,6 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+Feature/Create-Entity-Cliente
+
+      <Folder Include="Entities\" />
+ Feature/Create-project
       <Folder Include="Enum\" />
       <Folder Include="Event\" />
     </ItemGroup>
