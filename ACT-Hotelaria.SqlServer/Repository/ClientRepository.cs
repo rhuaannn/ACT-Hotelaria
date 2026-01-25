@@ -1,5 +1,6 @@
 using ACT_Hotelaria.Domain.Entities;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
+using ACT_Hotelaria.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACT_Hotelaria.SqlServer.Repository;
@@ -56,7 +57,14 @@ public class ClientRepository : IReadOnlyClientRepository, IWriteOnlyClientRepos
     {
         return await _context.Clients.AnyAsync(c => c.Id == id);
     }
-    
+
+    public async Task<bool> ExistsCpf(Cpf cpf)
+    {
+        var exists =  _context.Clients.Any(c => c.CPF == cpf);
+        if(exists) return await Task.FromResult(true);
+        return await Task.FromResult(false);
+    }
+
     public void Update(Client client)
     {
        _context.Clients.Update(client);
