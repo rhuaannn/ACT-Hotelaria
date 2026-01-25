@@ -11,6 +11,7 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         options.JsonSerializerOptions.WriteIndented = true;
     }); builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddInfrastructure(builder.Configuration);

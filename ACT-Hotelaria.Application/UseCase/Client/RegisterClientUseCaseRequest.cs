@@ -6,6 +6,6 @@ public record RegisterClientUseCaseRequest
     public string Email { get; set; }
     public string CPF { get; set; }
     public string Phone { get; set; }
-    public List<CreateDependentInput>? Dependents { get; set; }
+    public List<CreateDependentInput> Dependents { get; set; } = new();
 }
 public record CreateDependentInput(string Name, string CPF);

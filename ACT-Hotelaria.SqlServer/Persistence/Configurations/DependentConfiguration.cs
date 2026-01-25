@@ -11,16 +11,14 @@ public class DependentConfiguration : BaseConfiguration<Dependent>
     {
         base.Configure(builder);
         builder.ToTable("Dependentes");
-        
+
         builder.Property(d => d.Name)
             .HasMaxLength(255)
-            .HasColumnName("Name")
-            .IsRequired();
+            .HasColumnName("Name");
 
         builder.Property(d => d.CPF)
             .HasMaxLength(11)
             .HasConversion(d => d.Value, dbValue => new Cpf(dbValue))
-            .IsRequired()
             .HasColumnName("CPF");
 
         builder.HasOne(d => d.Client)
