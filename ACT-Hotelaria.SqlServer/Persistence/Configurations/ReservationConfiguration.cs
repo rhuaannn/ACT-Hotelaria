@@ -3,7 +3,7 @@ using ACT_Hotelaria.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ACT_Hotelaria.Infra.Persistence.Configurations;
+namespace ACT_Hotelaria.SqlServer.Persistence.Configurations;
 
 public class ReservationConfiguration : BaseConfiguration<Reservation>
 {
@@ -33,7 +33,7 @@ public class ReservationConfiguration : BaseConfiguration<Reservation>
             .IsRequired();
         
         builder.HasOne(r => r.Client)
-            .WithMany()
+            .WithMany(c => c.Reservations)
             .HasForeignKey(r => r.ClientId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();

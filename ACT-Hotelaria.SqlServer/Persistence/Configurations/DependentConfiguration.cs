@@ -3,7 +3,7 @@ using ACT_Hotelaria.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ACT_Hotelaria.Infra.Persistence.Configurations;
+namespace ACT_Hotelaria.SqlServer.Persistence.Configurations;
 
 public class DependentConfiguration : BaseConfiguration<Dependent>
 {
