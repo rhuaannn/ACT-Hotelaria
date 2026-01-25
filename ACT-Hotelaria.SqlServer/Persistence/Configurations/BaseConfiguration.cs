@@ -1,9 +1,8 @@
 using ACT_Hotelaria.Domain.Abstract;
-using ACT_Hotelaria.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ACT_Hotelaria.Infra.Persistence.Configurations;
+namespace ACT_Hotelaria.SqlServer.Persistence.Configurations;
 
 public abstract class BaseConfiguration<T> : IEntityTypeConfiguration<T> where T : BaseEntity
 {
