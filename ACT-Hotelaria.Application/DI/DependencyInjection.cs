@@ -1,4 +1,5 @@
 using ACT_Hotelaria.Application.UseCase.Client;
+using ACT_Hotelaria.Application.UseCase.Client.GetAll;
 using ACT_Hotelaria.Application.UseCase.Reservation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,7 @@ public static class DependencyInjection
     {
         services.AddScoped<RegisterClientUseCase>();
         services.AddScoped<RegisterReservationUseCase>();
+        services.AddScoped<GetAllClientUseCase>();
         return services;
     }
 }
