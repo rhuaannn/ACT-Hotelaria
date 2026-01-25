@@ -18,16 +18,18 @@ public sealed class Reservation : BaseEntity
     {
     }
     private Reservation(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, decimal dailyRate, Guid clientId)    {
-        CalculatePrice(dailyRate);
-        validateCheckin(checkin, checkout);
         
         if (clientId == Guid.Empty)
             throw new ArgumentException("O cliente é obrigatório.");
+        
+        validateCheckin(checkin, checkout);
         
         Type = type;
         Checkin = checkin;
         Checkout = checkout;
         ClientId = clientId;
+        
+        CalculatePrice(dailyRate);
     }
 
     public static Reservation Create(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, decimal dailyRate, Guid clientId)

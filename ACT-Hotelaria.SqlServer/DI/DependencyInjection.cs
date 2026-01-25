@@ -1,4 +1,5 @@
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
+using ACT_Hotelaria.Domain.Repository.cs.Reservation;
 using ACT_Hotelaria.SqlServer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,8 @@ public static class DependencyInjection
         services.AddSqlServer(configuration);
         services.AddScoped<IWriteOnlyClientRepository, ClientRepository>();
         services.AddScoped<IReadOnlyClientRepository, ClientRepository>();
+        services.AddScoped<IReadOnlyReservationRepository, ReservationRepository>();
+        services.AddScoped<IWriteOnlyReservationRepository, ReservationRepository>();
         
         return services;
     } 
