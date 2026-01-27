@@ -17,7 +17,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     {
         var reservation = await _context.Reservations
             .Include(r => r.Client)
-            .Include(r => r.Type)
             .Include(r => r.Checkin)
             .Include(r => r.Checkout)
             .AsNoTracking()
@@ -29,9 +28,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     {
         return await _context.Reservations
             .Include(r => r.Client)
-            .Include(r => r.Type)
-            .Include(r => r.Checkin)
-            .Include(r => r.Checkout)
             .AsNoTracking()
             .ToListAsync();
     }
@@ -57,6 +53,11 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         return false;
     }
 
+    public Task<IEnumerable<Client>> GetAllClient()
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task Add(Reservation reservation)
     {
         await _context.Reservations.AddAsync(reservation);
@@ -78,6 +79,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
 
     public void Update(Reservation reservation)
     {
-        _context.Reservations.Update(reservation);
+        throw new NotImplementedException();
     }
 }
