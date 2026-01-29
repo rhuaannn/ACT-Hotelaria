@@ -30,7 +30,14 @@ public class RegisterReservationUseCase
         {
             throw new ArgumentException("Cliente não encontrado");
         }
-
+        var existsCheckin = await _readOnlyReservationRepository.ExistsCheckin(request.CheckIn);
+        var existsCheckout = await _readOnlyReservationRepository.ExistsCheckout(request.CheckOut);
+        
+        if (existsCheckin || existsCheckout)
+        {
+            throw new ArgumentException("Reserva já registrada para o período informado");
+        }
+        
         var dailyRate = GetDailyRateByType(request.Type);
         
         var reservation = Domain.Entities.Reservation.Create(
