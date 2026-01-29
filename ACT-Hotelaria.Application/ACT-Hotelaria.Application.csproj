@@ -13,6 +13,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ACT-Hotelaria.Domain\ACT-Hotelaria.Domain.csproj" />
+      <ProjectReference Include="..\ACT-Hotelaria.Redis\ACT-Hotelaria.Redis.csproj" />
       <ProjectReference Include="..\ACT-Hotelaria.SqlServer\ACT-Hotelaria.SqlServer.csproj" />
     </ItemGroup>
 
