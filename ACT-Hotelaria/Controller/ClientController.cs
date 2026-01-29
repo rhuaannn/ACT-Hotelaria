@@ -1,5 +1,6 @@
 using ACT_Hotelaria.Application.UseCase.Client;
 using ACT_Hotelaria.Application.UseCase.Client.GetAll;
+using ACT_Hotelaria.Application.UseCase.Client.GetById;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,11 +10,15 @@ public class ClientController : BaseController
 {
     private readonly RegisterClientUseCase _registerClientUseCase;
     private readonly GetAllClientUseCase _getAllClientUseCase;
+    private readonly GetByIdClientUseCase _getByIdClientUseCase;
 
-    public ClientController(RegisterClientUseCase registerClientUseCase, GetAllClientUseCase getAllClientUseCase)
+    public ClientController(RegisterClientUseCase registerClientUseCase, 
+        GetByIdClientUseCase getByIdClientUseCase,
+        GetAllClientUseCase getAllClientUseCase)
     {
         _registerClientUseCase = registerClientUseCase;
         _getAllClientUseCase = getAllClientUseCase;
+        _getByIdClientUseCase = getByIdClientUseCase;       
     }
 
     [HttpPost]
@@ -32,5 +37,11 @@ public class ClientController : BaseController
         var clients = await _getAllClientUseCase.Handle();
         return Ok(clients);       
     }
-    
+
+    [HttpGet("id")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        var client = await _getByIdClientUseCase.Handle(id);
+        return Ok(client);       
+    }
 }

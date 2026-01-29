@@ -1,6 +1,8 @@
+using System.Text.Json;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.Domain.ValueObject;
+using ACT_Hotelaria.Redis.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client;
 
@@ -8,8 +10,11 @@ public class RegisterClientUseCase
 {
     private readonly IWriteOnlyClientRepository _clientRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
+
     
-    public RegisterClientUseCase(IWriteOnlyClientRepository clientRepository, IReadOnlyClientRepository readOnlyClientRepository)
+    public RegisterClientUseCase(IWriteOnlyClientRepository clientRepository,
+        IReadOnlyClientRepository readOnlyClientRepository
+        )
     {
         _clientRepository = clientRepository;
         _readOnlyClientRepository = readOnlyClientRepository;
