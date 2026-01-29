@@ -7,4 +7,5 @@ public interface IReadOnlyReservationRepository
     public Task<bool> Exists(Guid id);
     public Task<bool> ExistsCheckin(DateTime checkin);
     public Task<bool> ExistsCheckout(DateTime checkout);
+
 }
