@@ -32,7 +32,9 @@ public sealed class Reservation : BaseEntity
         CalculatePrice(dailyRate);
     }
 
-    public static Reservation Create(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, decimal dailyRate, Guid clientId)
+    public static Reservation Create(TypeRoomReservationEnum type, 
+                                    DateTime checkin, DateTime checkout, 
+                                    decimal dailyRate, Guid clientId)
     {
         return new Reservation(type, checkin, checkout, dailyRate, clientId);
     }
