@@ -1,3 +1,4 @@
+using ACT_Hotelaria.Message;
 using FluentValidation;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
@@ -7,16 +8,16 @@ public class RegisterReservationUseCaseValidator : AbstractValidator<Domain.Enti
     public RegisterReservationUseCaseValidator()
     {
         RuleFor(r => r.ClientId).NotEmpty().
-            WithMessage("Cliente obrigatório!");
+            WithMessage(ResourceMessages.ClienteObrigatorio);
         
         RuleFor(r => r.Checkin).NotEmpty()
-            .WithMessage("Data de checkin obrigatório!")
+            .WithMessage(ResourceMessages.CheckinObrigatorio)
             .GreaterThanOrEqualTo(DateTime.Today)
-            .WithMessage("O check-in deve ser para hoje ou data futura.");
+            .WithMessage(ResourceMessages.CheckinObrigatorio);
         
         RuleFor(r => r.Checkout)
             .NotEmpty()
             .GreaterThan(x => x.Checkin)
-            .WithMessage("A data de check-out deve ser posterior ao check-in.");        
+            .WithMessage(ResourceMessages.CheckinAndCheckoutDiferente);        
     }
 }

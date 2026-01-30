@@ -1,6 +1,8 @@
 using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Enum;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.ValueObject;
+using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.Entities;
 
@@ -20,7 +22,7 @@ public sealed class Reservation : BaseEntity
     private Reservation(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, decimal dailyRate, Guid clientId)    {
         
         if (clientId == Guid.Empty)
-            throw new ArgumentException("O cliente é obrigatório.");
+            throw new DomainException(ResourceMessages.ClienteObrigatorio);
         
         validateCheckin(checkin, checkout);
         
@@ -49,9 +51,9 @@ public sealed class Reservation : BaseEntity
     private void validateCheckin(DateTime checkin, DateTime checkout)
     {
         if (checkout <= checkin)
-            throw new ArgumentException("A data de checkout deve ser posterior ao checkin.");
+            throw new DomainException(ResourceMessages.CheckinAndCheckoutDiferente);
         
         if (checkin < DateTime.UtcNow.Date)
-            throw new ArgumentException("A data de checkin não pode ser no passado.");
+            throw new DomainException(ResourceMessages.CheckinObrigatorio);
     }
 }

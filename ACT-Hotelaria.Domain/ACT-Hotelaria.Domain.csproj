@@ -15,4 +15,8 @@
       <Compile Remove="Repository.cs\DependentRepository\IWriteOnlyDependentRepository.cs" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\ACT-Hotelaria.Message\ACT-Hotelaria.Message.csproj" />
+    </ItemGroup>
+
 </Project>
