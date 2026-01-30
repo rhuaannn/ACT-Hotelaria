@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="ErroInesperado" xml:space="preserve">
+        <value>Ocorreu um erro interno</value>
+    </data>
+    <data name="NomeObrigatorio" xml:space="preserve">
+        <value>Nome é obrigatório</value>
+    </data>
+    <data name="EmailObrigatorio" xml:space="preserve">
+        <value>Email é obrigatório.</value>
+    </data>
+    <data name="TelefoneObrigatorio" xml:space="preserve">
+        <value>Telefone é obrigatório</value>
+    </data>
+    <data name="ClienteObrigatorio" xml:space="preserve">
+        <value>Cliente é obrigatório</value>
+    </data>
+    <data name="CheckinObrigatorio" xml:space="preserve">
+        <value>Check-in é obrigatório</value>
+    </data>
+    <data name="CheckoutObrigatorio" xml:space="preserve">
+        <value>Checkout é obrigatório</value>
+    </data>
+    <data name="CheckinAndCheckoutDiferente" xml:space="preserve">
+        <value>A data de check-out deve ser posterior ao check-in.</value>
+    </data>
+    <data name="DependenteJaCadastrado" xml:space="preserve">
+        <value>Dependente ja cadastrado</value>
+    </data>
+    <data name="ReservaJaCadastrada" xml:space="preserve">
+        <value>Reserva já cadastrada</value>
+    </data>
+    <data name="ClienteNaoEncontrado" xml:space="preserve">
+        <value>Cliente não encontrado</value>
+    </data>
+</root>
