@@ -1,5 +1,6 @@
 using System.Net;
 using System.Text.Json;
+using ACT_Hotelaria.Domain.Exception;
 
 namespace ACT_Hotelaria.Middleware;
 
@@ -41,18 +42,20 @@ namespace ACT_Hotelaria.Middleware;
         switch (exception)
         {
             // Exemplo: Se for uma exceção de domínio (validação), retorna 400
-            case ArgumentException: 
-            // case DomainException: // (Se você tiver uma classe base para suas exceptions de domínio)
+            case ArgumentException:
                 statusCode = (int)HttpStatusCode.BadRequest;
                 message = exception.Message; // Mostra a mensagem real do erro de validação
                 break;
-                
+
+            case BaseException baseException:
+                statusCode = (int)baseException.StatusCode;
+                message = baseException.Message;
+                break;
+
             case KeyNotFoundException:
                 statusCode = (int)HttpStatusCode.NotFound;
                 message = "Recurso não encontrado.";
                 break;
-                
-            // Adicione outros cases conforme necessário
         }
 
         context.Response.StatusCode = statusCode;

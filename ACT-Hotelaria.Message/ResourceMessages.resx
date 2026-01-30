@@ -51,4 +51,7 @@
     <data name="ClienteNaoEncontrado" xml:space="preserve">
         <value>Cliente não encontrado</value>
     </data>
+    <data name="CPFJaCadastrado" xml:space="preserve">
+        <value>CPF já está em uso.</value>
+    </data>
 </root>

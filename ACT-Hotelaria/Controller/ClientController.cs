@@ -34,7 +34,7 @@ public class ClientController : BaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetAllClientResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllClients()
     {
         var clients = await _getAllClientUseCase.Handle();
@@ -43,7 +43,7 @@ public class ClientController : BaseController
         return Ok(response);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)

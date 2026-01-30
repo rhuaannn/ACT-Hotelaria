@@ -110,5 +110,11 @@ namespace ACT_Hotelaria.Message {
                 return ResourceManager.GetString("ClienteNaoEncontrado", resourceCulture);
             }
         }
+        
+        public static string CPFJaCadastrado {
+            get {
+                return ResourceManager.GetString("CPFJaCadastrado", resourceCulture);
+            }
+        }
     }
 }
