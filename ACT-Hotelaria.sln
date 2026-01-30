@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT-Hotelaria.Application",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT-Hotelaria.Redis", "ACT-Hotelaria.Redis\ACT-Hotelaria.Redis.csproj", "{B7737D53-82C4-4581-9870-71C65084EBEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ACT-Hotelaria.Message", "ACT-Hotelaria.Message\ACT-Hotelaria.Message.csproj", "{99A2A5B9-3FA6-4998-8D8E-3615060122BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{B7737D53-82C4-4581-9870-71C65084EBEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7737D53-82C4-4581-9870-71C65084EBEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7737D53-82C4-4581-9870-71C65084EBEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99A2A5B9-3FA6-4998-8D8E-3615060122BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99A2A5B9-3FA6-4998-8D8E-3615060122BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99A2A5B9-3FA6-4998-8D8E-3615060122BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99A2A5B9-3FA6-4998-8D8E-3615060122BE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

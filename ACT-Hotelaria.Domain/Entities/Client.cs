@@ -1,5 +1,7 @@
 using ACT_Hotelaria.Domain.Abstract;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.ValueObject;
+using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.Entities;
 
@@ -38,7 +40,7 @@ public sealed class Client : BaseEntity
     {
         if (_dependents.Any(d => d.CPF.Equals(cpf)))
         {
-            throw new ArgumentException("Dependente já cadastrado!");
+            throw new ConflitException(ResourceMessages.DependenteJaCadastrado);
         }
         
         var newDependent = Dependent.Create(name, cpf);
@@ -48,7 +50,7 @@ public sealed class Client : BaseEntity
     {
         if (string.IsNullOrWhiteSpace(name) || name.Length < 3)
         {
-            throw new ArgumentException("Não precisa ser válido!");
+            throw new DomainException(ResourceMessages.NomeObrigatorio);
         }
 
         return true;

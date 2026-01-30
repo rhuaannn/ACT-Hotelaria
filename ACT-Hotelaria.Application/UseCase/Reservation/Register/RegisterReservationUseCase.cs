@@ -1,6 +1,8 @@
 using ACT_Hotelaria.Domain.Enum;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
@@ -28,14 +30,14 @@ public class RegisterReservationUseCase
         var client = await _readOnlyClientRepository.Exists(request.ClientId);
         if (!client)
         {
-            throw new ArgumentException("Cliente não encontrado");
+            throw new DomainException(ResourceMessages.ClienteNaoEncontrado);
         }
         var existsCheckin = await _readOnlyReservationRepository.ExistsCheckin(request.CheckIn);
         var existsCheckout = await _readOnlyReservationRepository.ExistsCheckout(request.CheckOut);
         
         if (existsCheckin || existsCheckout)
         {
-            throw new ArgumentException("Reserva já registrada para o período informado");
+            throw new DomainException(ResourceMessages.ReservaJaCadastrada);
         }
         
         var dailyRate = GetDailyRateByType(request.Type);
