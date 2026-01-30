@@ -16,16 +16,25 @@ public class ReservationController : BaseController
     }
     
     [HttpPost]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>),StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterReservation([FromBody] RegisterReservationUseCaseRequest request)
     {
-        var response = await _registerReservationUseCase.Handle(request);
-        return Ok(response);
+        var result = await _registerReservationUseCase.Handle(request);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>.SuccesResponse(result);
+        
+        return Created("",response);
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>),StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
+
     public async Task<IActionResult> GetAllReservation()
     {
-        var response = await _getAllReservationUseCase.Handle();
+        var result = await _getAllReservationUseCase.Handle();
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllReservationUseCaseResponse>>
+            .SuccesResponse(result);
         return Ok(response);       
     }
 }
