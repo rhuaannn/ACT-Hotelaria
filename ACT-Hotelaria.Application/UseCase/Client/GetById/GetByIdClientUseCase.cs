@@ -1,6 +1,8 @@
 using System.Text.Json;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
+using ACT_Hotelaria.Message;
 using ACT_Hotelaria.Redis.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client.GetById;
@@ -33,7 +35,7 @@ public class GetByIdClientUseCase
 
         if (client == null)
         {
-            throw new ArgumentException("Cliente não encontrado");
+            throw new NotFoundException(ResourceMessages.ClienteNaoEncontrado);
         }
 
         var response = new GetByIdClientUseCaseResponse

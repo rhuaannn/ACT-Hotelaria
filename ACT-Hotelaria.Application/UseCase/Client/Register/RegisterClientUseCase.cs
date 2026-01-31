@@ -1,7 +1,9 @@
 using System.Text.Json;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.Domain.ValueObject;
+using ACT_Hotelaria.Message;
 using ACT_Hotelaria.Redis.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client;
@@ -10,14 +12,17 @@ public class RegisterClientUseCase
 {
     private readonly IWriteOnlyClientRepository _clientRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
+    private readonly IReadOnlyDependentRepository _readOnlyDependetRepository;
 
     
     public RegisterClientUseCase(IWriteOnlyClientRepository clientRepository,
-        IReadOnlyClientRepository readOnlyClientRepository
+        IReadOnlyClientRepository readOnlyClientRepository,
+        IReadOnlyDependentRepository readOnlyDependetRepository
         )
     {
         _clientRepository = clientRepository;
         _readOnlyClientRepository = readOnlyClientRepository;
+        _readOnlyDependetRepository = readOnlyDependetRepository;;
     }
 
     public async Task<RegisterClientUseCaseResponse> Handle(RegisterClientUseCaseRequest request)
@@ -28,10 +33,10 @@ public class RegisterClientUseCase
         
         var client = Domain.Entities.Client.Create(request.Name, cpf, email, telefone);
         var exists = await _readOnlyClientRepository.ExistsCpf(cpf.Value);
-        
+
         if (exists)
         {
-            throw new ArgumentException("Cpf já cadastrado");
+            throw new DomainException(ResourceMessages.CPFJaCadastrado);
         }
         
         if (request.Dependents != null)
@@ -40,9 +45,15 @@ public class RegisterClientUseCase
             {
                 if (string.IsNullOrWhiteSpace(dep.CPF) || string.IsNullOrWhiteSpace(dep.Name))
                 {
-                    throw new ArgumentException("Os dados dos dependente precisam ser preenchido corretamente");
+                    throw new DomainException(ResourceMessages.PreenchimentoDependenteObrigatorio);
                 }
+
                 var depCPF = Cpf.Create(dep.CPF);
+                var existsCPFDependent = await _readOnlyDependetRepository.ExistsCpf(depCPF.Value);
+                if (existsCPFDependent)
+                {
+                    throw new DomainException(ResourceMessages.CPFJaCadastrado);
+                }
                 client.AddDependent(dep.Name, depCPF);
             }
         }

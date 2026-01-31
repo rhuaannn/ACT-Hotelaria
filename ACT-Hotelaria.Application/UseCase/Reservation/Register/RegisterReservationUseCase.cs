@@ -30,7 +30,7 @@ public class RegisterReservationUseCase
         var client = await _readOnlyClientRepository.Exists(request.ClientId);
         if (!client)
         {
-            throw new DomainException(ResourceMessages.ClienteNaoEncontrado);
+            throw new NotFoundException(ResourceMessages.ClienteNaoEncontrado);
         }
         var existsCheckin = await _readOnlyReservationRepository.ExistsCheckin(request.CheckIn);
         var existsCheckout = await _readOnlyReservationRepository.ExistsCheckout(request.CheckOut);

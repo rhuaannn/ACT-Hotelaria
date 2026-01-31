@@ -34,22 +34,22 @@ public class ClientController : BaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetAllClientResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllClients()
     {
         var clients = await _getAllClientUseCase.Handle();
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllClientResponse>>
-            .SuccesResponse(clients);        
+            .SuccesResponse(clients, 200);        
         return Ok(response);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var client = await _getByIdClientUseCase.Handle(id);
-        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(client);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(client, 200);
         return Ok(response);
     }
 }

@@ -1,3 +1,6 @@
+using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Message;
+
 namespace ACT_Hotelaria.Domain.ValueObject;
 
 public sealed record Price
@@ -16,7 +19,7 @@ public sealed record Price
     {
         if (price <= 0)
         {
-            throw new ArgumentException("Preço deve ser maior que zero.");
+            throw new DomainException(ResourceMessages.PrecoMaiorQueZero);
         }
         return true;
     }
