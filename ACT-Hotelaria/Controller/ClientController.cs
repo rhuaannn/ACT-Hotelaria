@@ -39,7 +39,7 @@ public class ClientController : BaseController
     {
         var clients = await _getAllClientUseCase.Handle();
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllClientResponse>>
-            .SuccesResponse(clients);        
+            .SuccesResponse(clients, 200);        
         return Ok(response);
     }
 
@@ -49,7 +49,7 @@ public class ClientController : BaseController
     public async Task<IActionResult> GetById(Guid id)
     {
         var client = await _getByIdClientUseCase.Handle(id);
-        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(client);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(client, 200);
         return Ok(response);
     }
 }

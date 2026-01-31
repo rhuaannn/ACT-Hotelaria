@@ -54,4 +54,19 @@
     <data name="CPFJaCadastrado" xml:space="preserve">
         <value>CPF já está em uso.</value>
     </data>
+    <data name="PreenchimentoDependenteObrigatorio" xml:space="preserve">
+        <value>Os dados dos dependente são obrigatórios.</value>
+    </data>
+    <data name="CPFObrigatorio" xml:space="preserve">
+        <value>CPF é obrigatório</value>
+    </data>
+    <data name="PrecoMaiorQueZero" xml:space="preserve">
+        <value>Preço deve ser maior que zero</value>
+    </data>
+    <data name="TelefoneNumero" xml:space="preserve">
+        <value>Telefone precisa conter apenas numeros</value>
+    </data>
+    <data name="EmalObrigatorio" xml:space="preserve">
+        <value />
+    </data>
 </root>

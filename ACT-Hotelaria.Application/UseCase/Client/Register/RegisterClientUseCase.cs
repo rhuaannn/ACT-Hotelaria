@@ -45,7 +45,7 @@ public class RegisterClientUseCase
             {
                 if (string.IsNullOrWhiteSpace(dep.CPF) || string.IsNullOrWhiteSpace(dep.Name))
                 {
-                    throw new ArgumentException("Os dados dos dependente precisam ser preenchido corretamente");
+                    throw new DomainException(ResourceMessages.PreenchimentoDependenteObrigatorio);
                 }
 
                 var depCPF = Cpf.Create(dep.CPF);

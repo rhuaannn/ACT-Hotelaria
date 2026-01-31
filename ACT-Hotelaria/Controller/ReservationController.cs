@@ -21,7 +21,7 @@ public class ReservationController : BaseController
     public async Task<IActionResult> RegisterReservation([FromBody] RegisterReservationUseCaseRequest request)
     {
         var result = await _registerReservationUseCase.Handle(request);
-        var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>.SuccesResponse(result);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>.SuccesResponse(result, 200);
         
         return Created("",response);
     }
@@ -34,7 +34,7 @@ public class ReservationController : BaseController
     {
         var result = await _getAllReservationUseCase.Handle();
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllReservationUseCaseResponse>>
-            .SuccesResponse(result);
+            .SuccesResponse(result, 200);
         return Ok(response);       
     }
 }

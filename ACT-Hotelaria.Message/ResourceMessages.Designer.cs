@@ -21,7 +21,7 @@ namespace ACT_Hotelaria.Message {
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal ResourceMessages() {
+        public ResourceMessages() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -114,6 +114,36 @@ namespace ACT_Hotelaria.Message {
         public static string CPFJaCadastrado {
             get {
                 return ResourceManager.GetString("CPFJaCadastrado", resourceCulture);
+            }
+        }
+        
+        public static string PreenchimentoDependenteObrigatorio {
+            get {
+                return ResourceManager.GetString("PreenchimentoDependenteObrigatorio", resourceCulture);
+            }
+        }
+        
+        public static string CPFObrigatorio {
+            get {
+                return ResourceManager.GetString("CPFObrigatorio", resourceCulture);
+            }
+        }
+        
+        public static string PrecoMaiorQueZero {
+            get {
+                return ResourceManager.GetString("PrecoMaiorQueZero", resourceCulture);
+            }
+        }
+        
+        public static string TelefoneNumero {
+            get {
+                return ResourceManager.GetString("TelefoneNumero", resourceCulture);
+            }
+        }
+        
+        public static string EmalObrigatorio {
+            get {
+                return ResourceManager.GetString("EmalObrigatorio", resourceCulture);
             }
         }
     }
