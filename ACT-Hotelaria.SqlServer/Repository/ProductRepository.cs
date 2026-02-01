@@ -44,6 +44,7 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
 
     public void Update(Product product)
     {
-        throw new NotImplementedException();
+        _context.Products.Update(product);
+        _context.SaveChanges();
     }
 }

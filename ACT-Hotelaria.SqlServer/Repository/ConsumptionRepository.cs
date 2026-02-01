@@ -19,7 +19,7 @@ public class ConsumptionRepository : IWriteOnlyConsumptionRepository
 
     public void Update(Consumption consumption)
     {
-        _context.Consumptions.Update(consumption);
-        _context.SaveChanges();
+         _context.Consumptions.Update(consumption);
+         _context.SaveChanges();
     }
 }

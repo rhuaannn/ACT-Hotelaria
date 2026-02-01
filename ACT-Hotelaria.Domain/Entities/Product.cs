@@ -26,7 +26,11 @@ public class Product : BaseEntity
     {
         return new Product(name, qtyProduct, valueProduct);
     }
-
+    public void ReduceStock(int qtyProduct)
+    {
+        if (qtyProduct > QtyProduct) throw new DomainException("Estoque insuficiente.");
+        QtyProduct -= qtyProduct;
+    }
     private void ValidateProduct(string name, int qtyProduct)
     {
         if (string.IsNullOrEmpty(name))
