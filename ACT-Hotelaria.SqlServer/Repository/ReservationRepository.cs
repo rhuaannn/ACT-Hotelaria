@@ -17,9 +17,7 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     {
         var reservation = await _context.Reservations
             .Include(r => r.Client)
-            .Include(r => r.Checkin)
-            .Include(r => r.Checkout)
-            .AsNoTracking()
+            .Include(x => x.Consumptions)
             .FirstOrDefaultAsync(r => r.Id == id);
         return reservation;
     }
@@ -77,8 +75,19 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         return false;
     }
 
-    public void Update(Reservation reservation)
+    public async Task Update(Reservation reservation)
     {
-        throw new NotImplementedException();
+        foreach (var consumption in reservation.Consumptions)
+        {
+            var entry = _context.Entry(consumption);
+
+            if (entry.State == EntityState.Modified || entry.State == EntityState.Detached)
+            {
+                entry.State = EntityState.Added;
+            }
+        }
+        
+        await _context.SaveChangesAsync();
+        
     }
 }

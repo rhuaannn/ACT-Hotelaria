@@ -21,7 +21,7 @@ namespace ACT_Hotelaria.Message {
         private static System.Globalization.CultureInfo resourceCulture;
         
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        public ResourceMessages() {
+        internal ResourceMessages() {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -141,9 +141,9 @@ namespace ACT_Hotelaria.Message {
             }
         }
         
-        public static string EmalObrigatorio {
+        public static string ReservaNaoEncontrada {
             get {
-                return ResourceManager.GetString("EmalObrigatorio", resourceCulture);
+                return ResourceManager.GetString("ReservaNaoEncontrada", resourceCulture);
             }
         }
     }

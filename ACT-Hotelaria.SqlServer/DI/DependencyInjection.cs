@@ -1,4 +1,7 @@
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
+using ACT_Hotelaria.Domain.Repository.cs.ConsumptionRepository.cs;
+using ACT_Hotelaria.Domain.Repository.cs.InvoicingRepository;
+using ACT_Hotelaria.Domain.Repository.cs.ProductRepository;
 using ACT_Hotelaria.Domain.Repository.cs.Reservation;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.SqlServer.Repository;
@@ -18,6 +21,10 @@ public static class DependencyInjection
         services.AddScoped<IReadOnlyReservationRepository, ReservationRepository>();
         services.AddScoped<IWriteOnlyReservationRepository, ReservationRepository>();
         services.AddScoped<IReadOnlyDependentRepository, DependentRepository>();
+        services.AddScoped<IReadOnlyProductRepository, ProductRepository>();
+        services.AddScoped<IWriteOnlyProductRepository, ProductRepository>();
+        services.AddScoped<IWriteOnlyConsumptionRepository, ConsumptionRepository>();
+        services.AddScoped<IWriteOnlyInvoiceRepository, InvoicingRepository>();
         
         return services;
     } 

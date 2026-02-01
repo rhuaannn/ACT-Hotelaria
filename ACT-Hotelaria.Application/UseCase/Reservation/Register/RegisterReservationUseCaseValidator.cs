@@ -3,21 +3,21 @@ using FluentValidation;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
-public class RegisterReservationUseCaseValidator : AbstractValidator<Domain.Entities.Reservation>
+public class RegisterReservationUseCaseValidator : AbstractValidator<RegisterReservationUseCaseRequest>
 {
     public RegisterReservationUseCaseValidator()
     {
         RuleFor(r => r.ClientId).NotEmpty().
             WithMessage(ResourceMessages.ClienteObrigatorio);
         
-        RuleFor(r => r.Checkin).NotEmpty()
+        RuleFor(r => r.CheckIn).NotEmpty()
             .WithMessage(ResourceMessages.CheckinObrigatorio)
             .GreaterThanOrEqualTo(DateTime.Today)
             .WithMessage(ResourceMessages.CheckinObrigatorio);
         
-        RuleFor(r => r.Checkout)
+        RuleFor(r => r.CheckOut)
             .NotEmpty()
-            .GreaterThan(x => x.Checkin)
+            .GreaterThan(x => x.CheckIn)
             .WithMessage(ResourceMessages.CheckinAndCheckoutDiferente);        
     }
 }
