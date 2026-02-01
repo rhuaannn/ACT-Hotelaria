@@ -66,7 +66,7 @@
     <data name="TelefoneNumero" xml:space="preserve">
         <value>Telefone precisa conter apenas numeros</value>
     </data>
-    <data name="EmalObrigatorio" xml:space="preserve">
-        <value />
+    <data name="ReservaNaoEncontrada" xml:space="preserve">
+        <value>Reserva não encontrada</value>
     </data>
 </root>

@@ -4,22 +4,31 @@ namespace ACT_Hotelaria.Domain.Entities;
 
 public sealed class Invoicing : BaseEntity
 {
-    public decimal ValueTotal { get; private set; }
-    
+    public decimal TotalRoomValue { get; private set; }   
+    public decimal TotalConsumptionValue { get; private set; } 
+    public decimal ValueTotal { get; private set; }      
+    public DateTime IssueDate { get; private set; }
     public Guid ReservationId { get; private set; }
-    public Reservation Reservation { get; private set; }
-
+    
     private Invoicing()
     {
     }
-    private Invoicing(decimal valueTotal, Guid reservationId) 
+
+    private Invoicing(Guid reservationId, decimal roomValue, decimal consumptionValue)
     {
-        ValueTotal = valueTotal;
+        Id = Guid.NewGuid();
+        IssueDate = DateTime.UtcNow;
         ReservationId = reservationId;
+        TotalRoomValue = roomValue;
+        TotalConsumptionValue = consumptionValue;
+        
+        ValueTotal = TotalRoomValue + TotalConsumptionValue;
     }
-    
-    public static Invoicing Create(decimal value, Guid reservationId)
+    public static Invoicing Create(Reservation reservation)
     {
-        return new(value, reservationId);
+        var roomTotal = reservation.CalculateTotalPrice();
+        var consumptionTotal = reservation.Consumptions.Sum(x => x.TotalValue);
+
+        return new Invoicing(reservation.Id, roomTotal, consumptionTotal);
     }
 }

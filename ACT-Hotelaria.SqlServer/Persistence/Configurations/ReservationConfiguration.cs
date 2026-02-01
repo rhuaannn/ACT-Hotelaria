@@ -15,14 +15,6 @@ public class ReservationConfiguration : BaseConfiguration<Reservation>
         builder.Property(r => r.Type)
             .HasConversion<string>()
             .IsRequired();
-
-        builder.Property(r => r.TotalPrice)
-            .HasConversion(
-                p => p.Value,
-                value => Price.Create(value))
-            .HasColumnName("TotalPrice")
-            .HasPrecision(18, 2)
-            .IsRequired();
         
         builder.Property(r => r.Checkin)
             .IsRequired()
@@ -37,6 +29,11 @@ public class ReservationConfiguration : BaseConfiguration<Reservation>
             .HasForeignKey(r => r.ClientId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+        
+        builder.HasMany(r => r.Consumptions)
+            .WithOne(c => c.Reservation)
+            .HasForeignKey(c => c.ReservationId)
+            .OnDelete(DeleteBehavior.Cascade);
 
     }
 }
