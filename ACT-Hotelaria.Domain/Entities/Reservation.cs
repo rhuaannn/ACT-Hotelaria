@@ -54,22 +54,23 @@ public sealed class Reservation : BaseEntity
     {
         if (qtyRequested <= 0)
         {
-            throw new DomainException("A quantidade deve ser maior que zero.");
+            throw new DomainException(ResourceMessages.PrecoMaiorQueZero);
         }
         
         if (DateTime.UtcNow.Date > Checkout.Date)
         {
-            throw new DomainException("Não é possível adicionar consumo a uma reserva já finalizada (Checkout expirado).");
+            throw new DomainException(ResourceMessages.CheckoutObrigatorio);
         }
     
         if (DateTime.UtcNow.Date < Checkin.Date)
         {
-            throw new DomainException("O check-in ainda não foi realizado.");
+            throw new DomainException(ResourceMessages.CheckinObrigatorio);
         }
 
         var consumption = Consumption.Create(this.Id, product.Id, qtyRequested, product.ValueProduct.Value);
-    
-        _consumptions.Add(consumption);
+         _consumptions.Add(consumption);
+        
+         product.ReduceStock(qtyRequested);
     }
 
     private void validateCheckin(DateTime checkin, DateTime checkout)

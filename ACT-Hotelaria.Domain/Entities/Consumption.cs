@@ -30,4 +30,5 @@ public class Consumption : BaseEntity
         return new Consumption(reservationId, productId, qtyProduct, currentPrice);
     }
 
+
 }
