@@ -26,9 +26,14 @@ public class Room : BaseEntity
 
     private void ValidateRoom(TypeRoomReservationEnum type, int qtyRoom)
     {
-        if (type == null || qtyRoom <= 0)
+        var existsEnum = System.Enum.IsDefined(typeof(TypeRoomReservationEnum), type);
+        if (!existsEnum)
         {
-            throw new DomainException("O tipo de quarto e a quantidade devem ser informados");
+            throw new DomainException("O tipo de quarto deve ser válido.");
+        }
+        if (qtyRoom <= 0)
+        {
+            throw new DomainException("A quantidade de quartos deve ser maior que zero.");
         }
     }
     
