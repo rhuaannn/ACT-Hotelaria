@@ -1,7 +1,7 @@
 using ACT_Hotelaria.Domain.Exception;
-using ACT_Hotelaria.Domain.Repository.cs.ConsumptionRepository.cs;
-using ACT_Hotelaria.Domain.Repository.cs.ProductRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
+using ACT_Hotelaria.Domain.Repository.ProductRepository;
+using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Application.UseCase.Consumption;

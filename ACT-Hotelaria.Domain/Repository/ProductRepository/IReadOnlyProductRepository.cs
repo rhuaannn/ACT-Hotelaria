@@ -1,6 +1,6 @@
 using ACT_Hotelaria.Domain.Entities;
 
-namespace ACT_Hotelaria.Domain.Repository.cs.ProductRepository;
+namespace ACT_Hotelaria.Domain.Repository.ProductRepository;
 
 public interface IReadOnlyProductRepository
 {

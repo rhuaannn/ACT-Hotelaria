@@ -11,6 +11,7 @@ public class ACT_HotelariaDbContext : DbContext
     public DbSet<Invoicing> Invoicings { get; set; }
     public DbSet<Product>  Products { get; set; }
     public DbSet<Consumption> Consumptions { get; set; }
+    public DbSet<Room> Rooms { get; set; }
     
     public ACT_HotelariaDbContext(DbContextOptions<ACT_HotelariaDbContext> options) : base(options)
     {

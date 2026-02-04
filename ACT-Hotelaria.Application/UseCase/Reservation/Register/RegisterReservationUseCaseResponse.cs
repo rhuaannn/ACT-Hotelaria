@@ -6,4 +6,5 @@ public class RegisterReservationUseCaseResponse
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
     public decimal DailyValue { get; set; }
+    public Guid RoomId { get; set; }
 }

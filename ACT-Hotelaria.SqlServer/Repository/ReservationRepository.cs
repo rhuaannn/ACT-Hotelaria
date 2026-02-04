@@ -1,5 +1,5 @@
 using ACT_Hotelaria.Domain.Entities;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.Reservation;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACT_Hotelaria.SqlServer.Repository;
@@ -50,12 +50,7 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         if(exists) return true;
         return false;
     }
-
-    public Task<IEnumerable<Client>> GetAllClient()
-    {
-        throw new NotImplementedException();
-    }
-
+    
     public async Task Add(Reservation reservation)
     {
         await _context.Reservations.AddAsync(reservation);

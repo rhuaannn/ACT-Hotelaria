@@ -12,9 +12,10 @@ public class ReservationConfiguration : BaseConfiguration<Reservation>
         base.Configure(builder);
         builder.ToTable("Reservas");
         
-        builder.Property(r => r.Type)
-            .HasConversion<string>()
-            .IsRequired();
+        builder.HasOne(r => r.Room)
+            .WithMany(rm => rm.Reservations)
+            .HasForeignKey(r => r.RoomId)
+            .OnDelete(DeleteBehavior.Restrict);
         
         builder.Property(r => r.Checkin)
             .IsRequired()

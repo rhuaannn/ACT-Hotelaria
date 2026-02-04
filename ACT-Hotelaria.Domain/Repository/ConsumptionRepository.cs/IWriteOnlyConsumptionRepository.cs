@@ -1,6 +1,6 @@
 using ACT_Hotelaria.Domain.Entities;
 
-namespace ACT_Hotelaria.Domain.Repository.cs.ConsumptionRepository.cs;
+namespace ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
 
 public interface IWriteOnlyConsumptionRepository
 {

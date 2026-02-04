@@ -1,6 +1,6 @@
 using ACT_Hotelaria.Domain.Exception;
-using ACT_Hotelaria.Domain.Repository.cs.InvoicingRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
+using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
 using Azure.Core;
 

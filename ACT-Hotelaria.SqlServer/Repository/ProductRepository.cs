@@ -1,5 +1,5 @@
 using ACT_Hotelaria.Domain.Entities;
-using ACT_Hotelaria.Domain.Repository.cs.ProductRepository;
+using ACT_Hotelaria.Domain.Repository.ProductRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACT_Hotelaria.SqlServer.Repository;
