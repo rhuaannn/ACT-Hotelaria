@@ -7,9 +7,8 @@ public class RegisterReservationUseCaseRequest
     public Guid ClientId { get; set; }
     public DateTime CheckIn { get; set; }
     public DateTime CheckOut { get; set; }
-    
     public decimal AgreedDailyRate { get; set; }
-    public TypeRoomReservationEnum Type { get; set; }
-    
+    public Guid RoomId { get; set; }
+     
     
 }

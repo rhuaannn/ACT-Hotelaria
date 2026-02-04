@@ -1,5 +1,5 @@
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.Reservation;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation.GetAll;
 

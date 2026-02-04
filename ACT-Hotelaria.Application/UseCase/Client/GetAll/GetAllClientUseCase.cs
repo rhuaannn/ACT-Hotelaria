@@ -1,9 +1,9 @@
 using System.Collections;
 using ACT_Hotelaria.Domain.Entities;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
-using ACT_Hotelaria.Domain.Repository.DependentRepository;
-using ACT_Hotelaria.Redis.Repository;
+ using ACT_Hotelaria.Domain.Repository.DependentRepository;
+ using ACT_Hotelaria.Domain.Repository.Reservation;
+ using ACT_Hotelaria.Redis.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client.GetAll;
 

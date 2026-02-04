@@ -9,25 +9,25 @@ namespace ACT_Hotelaria.Domain.Entities;
 public sealed class Reservation : BaseEntity
 {
     private readonly List<Consumption> _consumptions = new();
-    public TypeRoomReservationEnum Type { get; private set; }
     public DateTime Checkin { get; private set; } = DateTime.UtcNow;
     public DateTime Checkout { get; private set; }
     public decimal AgreedDailyRate { get; private set; }
     public Guid ClientId { get; private set; }
     public Client Client { get; private set; }
+    public Guid RoomId { get; private set; }
+    public Room Room { get; private set; }
 
     public IReadOnlyCollection<Consumption> Consumptions => _consumptions.AsReadOnly();
     private Reservation()
     {
     }
-    private Reservation(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate)    {
+    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate)    {
         
         if (clientId == Guid.Empty)
             throw new DomainException(ResourceMessages.ClienteObrigatorio);
         
         validateCheckin(checkin, checkout);
-        
-        Type = type;
+        RoomId = roomId;
         Checkin = checkin;
         Checkout = checkout;
         ClientId = clientId;
@@ -35,11 +35,10 @@ public sealed class Reservation : BaseEntity
         
     }
 
-    public static Reservation Create(TypeRoomReservationEnum type, 
-                                    DateTime checkin, DateTime checkout, 
+    public static Reservation Create(Guid RoomId, DateTime checkin, DateTime checkout, 
                                      Guid clientId, decimal agreedDailyRate)
     {
-        return new Reservation(type, checkin, checkout, clientId, agreedDailyRate);
+        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate);
     }
 
     internal decimal CalculateTotalPrice()
@@ -72,6 +71,7 @@ public sealed class Reservation : BaseEntity
         
          product.ReduceStock(qtyRequested);
     }
+    
 
     private void validateCheckin(DateTime checkin, DateTime checkout)
     {

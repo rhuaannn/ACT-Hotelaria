@@ -1,5 +1,5 @@
 using ACT_Hotelaria.Domain.Entities;
-using ACT_Hotelaria.Domain.Repository.cs.InvoicingRepository;
+using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
 
 namespace ACT_Hotelaria.SqlServer.Repository;
 

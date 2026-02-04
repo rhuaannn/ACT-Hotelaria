@@ -1,5 +1,5 @@
-using ACT_Hotelaria.Domain.Repository.cs.ProductRepository;
-using ACT_Hotelaria.SqlServer.Repository;
+ using ACT_Hotelaria.Domain.Repository.ProductRepository;
+ using ACT_Hotelaria.SqlServer.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Product;
 

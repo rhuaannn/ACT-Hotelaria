@@ -6,6 +6,7 @@ using ACT_Hotelaria.Application.UseCase.Invoicing;
 using ACT_Hotelaria.Application.UseCase.Product;
 using ACT_Hotelaria.Application.UseCase.Reservation;
 using ACT_Hotelaria.Application.UseCase.Reservation.GetAll;
+using ACT_Hotelaria.Application.UseCase.Room;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ACT_Hotelaria.Application.DI;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<RegisterProductUseCase>();
         services.AddScoped<RegisterConsumptionUseCase>();
         services.AddScoped<RegisterInvoicingUseCase>();
+        services.AddScoped<RegisterRoomUseCase>();
         return services;
     }
 }

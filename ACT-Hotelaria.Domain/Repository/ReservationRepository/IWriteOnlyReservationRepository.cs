@@ -1,4 +1,4 @@
-namespace ACT_Hotelaria.Domain.Repository.cs.Reservation;
+namespace ACT_Hotelaria.Domain.Repository.Reservation;
 
 public interface IWriteOnlyReservationRepository
 {
