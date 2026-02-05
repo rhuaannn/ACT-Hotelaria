@@ -17,7 +17,7 @@ public sealed class Client : BaseEntity
     
     public IReadOnlyCollection<Dependent> Dependents => _dependents.AsReadOnly();
     public IReadOnlyCollection<Reservation> Reservations => _reservations.AsReadOnly();
-
+    
     private Client()
     {
     }

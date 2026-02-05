@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace ACT_Hotelaria.Application.UseCase.Consumption;
 
-public class RegisterConsumptionUseCaseRequest
+public class RegisterConsumptionUseCaseRequest : IRequest<RegisterConsumptionUseCaseResponse>
 {
     public Guid ProductId { get; set; }
     public Guid ReservationId { get; set; }

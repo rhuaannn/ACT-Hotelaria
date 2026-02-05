@@ -1,8 +1,9 @@
  using ACT_Hotelaria.Domain.Repository.RoomRepository;
+ using MediatR;
 
-namespace ACT_Hotelaria.Application.UseCase.Room;
+ namespace ACT_Hotelaria.Application.UseCase.Room;
 
-public class RegisterRoomUseCase
+public class RegisterRoomUseCase : IRequestHandler<RegisterRoomUseCaseRequest, RegisterRoomUseCaseResponse>
 {
     private readonly IWriteOnlyRoomRepository _roomRepository;
 
@@ -11,7 +12,7 @@ public class RegisterRoomUseCase
         _roomRepository = roomRepository;
     }
 
-    public async Task<RegisterRoomUseCaseResponse> Handle(RegisterRoomUseCaseRequest request)
+    public async Task<RegisterRoomUseCaseResponse> Handle(RegisterRoomUseCaseRequest request, CancellationToken cancellationToken)
     {
         var room = Domain.Entities.Room.Create(
             request.TypeRoom,
@@ -25,4 +26,6 @@ public class RegisterRoomUseCase
             Quantity = room.QtyRoom
         };
     }
+
+     
 }

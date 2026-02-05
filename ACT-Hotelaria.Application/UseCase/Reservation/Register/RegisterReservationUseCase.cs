@@ -4,29 +4,27 @@ using ACT_Hotelaria.Domain.Repository.ClientRepository;
  using ACT_Hotelaria.Domain.Repository.Reservation;
  using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.Message;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
-public class RegisterReservationUseCase
+public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUseCaseRequest, RegisterReservationUseCaseResponse>
 {
     private readonly IWriteOnlyReservationRepository _writeOnlyReservationRepository;
-    private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyRoomRepository _readOnlyRoomRepository;
 
     public RegisterReservationUseCase(
         IReadOnlyClientRepository readOnlyClientRepository, 
         IWriteOnlyReservationRepository writeOnlyReservationRepository, 
-        IReadOnlyReservationRepository readOnlyReservationRepository,
         IReadOnlyRoomRepository readOnlyRoomRepository)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
         _writeOnlyReservationRepository = writeOnlyReservationRepository;
-        _readOnlyReservationRepository = readOnlyReservationRepository;
         _readOnlyRoomRepository = readOnlyRoomRepository;
     }
 
-    public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request)
+    public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request, CancellationToken cancellationToken)
     {
         var client = await _readOnlyClientRepository.Exists(request.ClientId);
         var existsReservationClientPeriod = await _readOnlyClientRepository.ExistsCheckinPeriod(request.CheckIn, request.CheckOut);
@@ -75,5 +73,4 @@ public class RegisterReservationUseCase
             DailyValue = reservation.AgreedDailyRate
             };
     }
-    
 }

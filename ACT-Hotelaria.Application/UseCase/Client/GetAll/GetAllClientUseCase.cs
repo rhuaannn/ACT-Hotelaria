@@ -1,4 +1,5 @@
 using System.Collections;
+using ACT_Hotelaria.Application.Abstract.Query;
 using ACT_Hotelaria.Domain.Entities;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
  using ACT_Hotelaria.Domain.Repository.DependentRepository;
@@ -7,7 +8,7 @@ using ACT_Hotelaria.Domain.Repository.ClientRepository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client.GetAll;
 
-public class GetAllClientUseCase
+public class GetAllClientUseCase : IQueryHandler<GetAllQueryClientUseCase, IEnumerable<GetAllClientResponse>>
 {
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
@@ -26,8 +27,9 @@ public class GetAllClientUseCase
         _caching = caching;
     }
 
-    public async Task<IEnumerable<GetAllClientResponse>> Handle()
-    {
+    public async Task<IEnumerable<GetAllClientResponse>> Handle(GetAllQueryClientUseCase request,
+                                                                CancellationToken cancellationToken = default)
+   {
         var clients = await _readOnlyClientRepository.GetAll();
 
         var response = clients.Select(client => new GetAllClientResponse
