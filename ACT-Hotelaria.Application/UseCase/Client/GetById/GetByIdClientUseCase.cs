@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ACT_Hotelaria.Application.Abstract.Query;
 using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
@@ -7,7 +8,7 @@ using ACT_Hotelaria.Redis.Repository;
 
 namespace ACT_Hotelaria.Application.UseCase.Client.GetById;
 
-public class GetByIdClientUseCase
+public class GetByIdClientUseCase : IQueryHandler<GetByIdQueryClientUseCase, GetByIdClientUseCaseResponse>
 {
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly ICaching _caching;
@@ -18,9 +19,9 @@ public class GetByIdClientUseCase
         _caching = caching;
     }
 
-    public async Task<GetByIdClientUseCaseResponse> Handle(Guid id)
+    public async Task<GetByIdClientUseCaseResponse> Handle(GetByIdQueryClientUseCase request, CancellationToken cancellationToken)
     {
-        var cacheKey = $"client:{id}";
+        var cacheKey = $"client:{request.Id}";
         var cachedJson = await _caching.GetAsync(cacheKey);
         if (!string.IsNullOrEmpty(cachedJson))
         {
@@ -31,7 +32,7 @@ public class GetByIdClientUseCase
             }
         }
 
-        var client = await _readOnlyClientRepository.GetById(id);
+        var client = await _readOnlyClientRepository.GetById(request.Id);
 
         if (client == null)
         {

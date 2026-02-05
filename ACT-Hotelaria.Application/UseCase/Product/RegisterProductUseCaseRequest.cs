@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace ACT_Hotelaria.Application.UseCase.Product;
 
-public class RegisterProductUseCaseRequest
+public class RegisterProductUseCaseRequest : IRequest<RegisterProductUseCaseResponse>
 {
     public string Name { get; set; }
     public decimal Value { get; set; }

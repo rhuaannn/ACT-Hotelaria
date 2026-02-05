@@ -1,9 +1,10 @@
  using ACT_Hotelaria.Domain.Repository.ProductRepository;
  using ACT_Hotelaria.SqlServer.Repository;
+ using MediatR;
 
-namespace ACT_Hotelaria.Application.UseCase.Product;
+ namespace ACT_Hotelaria.Application.UseCase.Product;
 
-public class RegisterProductUseCase
+public class RegisterProductUseCase : IRequestHandler<RegisterProductUseCaseRequest, RegisterProductUseCaseResponse>
 {
     private readonly IWriteOnlyProductRepository _IWiriteProductRepository;
 
@@ -12,7 +13,7 @@ public class RegisterProductUseCase
         _IWiriteProductRepository = iWriteOnlyProductRepository;
     }
 
-    public async Task<RegisterProductUseCaseResponse> Handle(RegisterProductUseCaseRequest request)
+    public async Task<RegisterProductUseCaseResponse> Handle(RegisterProductUseCaseRequest request, CancellationToken cancellationToken)
     {
        var product = Domain.Entities.Product.Create(request.Name, request.Quantity, request.Value);
        await _IWiriteProductRepository.Add(product);

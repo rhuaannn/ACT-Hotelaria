@@ -3,10 +3,11 @@ using ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
 using ACT_Hotelaria.Domain.Repository.ProductRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Consumption;
 
-public class RegisterConsumptionUseCase
+public class RegisterConsumptionUseCase : IRequestHandler<RegisterConsumptionUseCaseRequest, RegisterConsumptionUseCaseResponse>
 {
     private readonly IWriteOnlyConsumptionRepository _writeOnlyConsumptionRepository;
     private readonly IReadOnlyReservationRepository _readOnlyReservationRepository; 
@@ -28,7 +29,7 @@ public class RegisterConsumptionUseCase
         _writeOnlyProductRepository = writeOnlyProductRepository;
     }
 
-    public async Task<RegisterConsumptionUseCaseResponse> Handle(RegisterConsumptionUseCaseRequest request)
+    public async Task<RegisterConsumptionUseCaseResponse> Handle(RegisterConsumptionUseCaseRequest request, CancellationToken cancellationToken)
     {
         var reservation = await _readOnlyReservationRepository.GetAllById(request.ReservationId);
         if (reservation == null)

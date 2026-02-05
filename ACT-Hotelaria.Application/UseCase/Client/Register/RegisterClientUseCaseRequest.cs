@@ -1,6 +1,8 @@
+using MediatR;
+
 namespace ACT_Hotelaria.Application.UseCase.Client;
 
-public record RegisterClientUseCaseRequest
+public record RegisterClientUseCaseRequest : IRequest<RegisterClientUseCaseResponse>
 {
     public string Name { get; set; }
     public string Email { get; set; }

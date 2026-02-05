@@ -3,10 +3,11 @@ using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
 using Azure.Core;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Invoicing;
 
-public class RegisterInvoicingUseCase
+public class RegisterInvoicingUseCase : IRequestHandler<RegisterInvoicingUseCaseRequest, RegisterInvoicingUseCaseResponse>
 {
     private readonly IWriteOnlyInvoiceRepository _writeOnlyInvoiceRepository;
     private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
@@ -19,7 +20,7 @@ public class RegisterInvoicingUseCase
         _readOnlyReservationRepository = readOnlyReservationRepository;
     }
 
-    public async Task<RegisterInvoicingUseCaseResponse> Handle(RegisterInvoicingUseCaseRequest request)
+    public async Task<RegisterInvoicingUseCaseResponse> Handle(RegisterInvoicingUseCaseRequest request, CancellationToken cancellationToken)
     {
         var reservation = await _readOnlyReservationRepository.GetAllById(request.ReservationId);
 

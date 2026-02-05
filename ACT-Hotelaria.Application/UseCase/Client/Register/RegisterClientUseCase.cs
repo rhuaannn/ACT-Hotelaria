@@ -5,10 +5,11 @@ using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.Domain.ValueObject;
 using ACT_Hotelaria.Message;
 using ACT_Hotelaria.Redis.Repository;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Client;
 
-public class RegisterClientUseCase
+public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseRequest, RegisterClientUseCaseResponse>
 {
     private readonly IWriteOnlyClientRepository _clientRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
@@ -25,7 +26,7 @@ public class RegisterClientUseCase
         _readOnlyDependetRepository = readOnlyDependetRepository;;
     }
 
-    public async Task<RegisterClientUseCaseResponse> Handle(RegisterClientUseCaseRequest request)
+    public async Task<RegisterClientUseCaseResponse> Handle(RegisterClientUseCaseRequest request, CancellationToken cancellationToken)
     {
         var email = Email.Create(request.Email);
         var cpf = Cpf.Create(request.CPF);
