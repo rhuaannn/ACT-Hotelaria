@@ -28,6 +28,7 @@ public static class DependencyInjection
         services.AddScoped<IWriteOnlyInvoiceRepository, InvoicingRepository>();
         services.AddScoped<IWriteOnlyRoomRepository, RoomRepository>();
         services.AddScoped<IReadOnlyRoomRepository, RoomRepository>();
+        services.AddScoped<IReadOnlyConsumptionRepository, ConsumptionRepository>();
         
         
         return services;

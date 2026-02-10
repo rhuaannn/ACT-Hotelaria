@@ -1,4 +1,5 @@
 using ACT_Hotelaria.Application.UseCase.Product;
+using ACT_Hotelaria.Application.UseCase.Product.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,5 +17,15 @@ public class ProductController(IMediator mediator) : BaseController(mediator)
         var result = await _mediator.Send(request);
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterProductUseCaseResponse>.SuccesResponse(result, 200);
         return Created(string.Empty, response);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAllProducts(CancellationToken cancellationToken = default)
+    {
+        var query = new GetAllQueryProduct();
+        var products = await _mediator.Send(query);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllProductUseCaseResponse>>
+            .SuccesResponse(products, 200);
+        return Ok(response);
     }
 }
