@@ -9,5 +9,6 @@ public interface IReadOnlyClientRepository
     public Task<IEnumerable<Client>> GetAll();
     public Task<bool> Exists(Guid id);
     public Task<bool> ExistsCpf(Cpf cpf);
+    public Task<bool> ExistsCheckinPeriod(DateTime checkin, DateTime checkout);
 
 }

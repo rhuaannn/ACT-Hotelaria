@@ -1,9 +1,11 @@
+using ACT_Hotelaria.Application.Abstract.Query;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.Reservation;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation.GetAll;
 
-public class GetAllReservationUseCase
+public class GetAllReservationUseCase : IQueryHandler<GetAllQueryReservation, IEnumerable<GetAllReservationUseCaseResponse>>
 {
     private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
@@ -14,7 +16,7 @@ public class GetAllReservationUseCase
         _readOnlyReservationRepository = readOnlyReservationRepository;
     }
 
-    public async Task<IEnumerable<GetAllReservationUseCaseResponse>> Handle()
+    public async Task<IEnumerable<GetAllReservationUseCaseResponse>> Handle(GetAllQueryReservation query,  CancellationToken cancellationToken)
     {
         var client = await _readOnlyClientRepository.GetAll();
 

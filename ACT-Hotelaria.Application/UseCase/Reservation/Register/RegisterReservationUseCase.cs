@@ -1,71 +1,76 @@
 using ACT_Hotelaria.Domain.Enum;
 using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+ using ACT_Hotelaria.Domain.Repository.Reservation;
+ using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.Message;
+using MediatR;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
-public class RegisterReservationUseCase
+public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUseCaseRequest, RegisterReservationUseCaseResponse>
 {
     private readonly IWriteOnlyReservationRepository _writeOnlyReservationRepository;
-    private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
-    private readonly IWriteOnlyClientRepository _writeOnlyClientRepository;
+    private readonly IReadOnlyRoomRepository _readOnlyRoomRepository;
 
     public RegisterReservationUseCase(
         IReadOnlyClientRepository readOnlyClientRepository, 
-        IWriteOnlyClientRepository writeOnlyClientRepository, 
         IWriteOnlyReservationRepository writeOnlyReservationRepository, 
-        IReadOnlyReservationRepository readOnlyReservationRepository)
+        IReadOnlyRoomRepository readOnlyRoomRepository)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
-        _writeOnlyClientRepository = writeOnlyClientRepository;
         _writeOnlyReservationRepository = writeOnlyReservationRepository;
-        _readOnlyReservationRepository = readOnlyReservationRepository;
+        _readOnlyRoomRepository = readOnlyRoomRepository;
     }
 
-    public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request)
+    public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request, CancellationToken cancellationToken)
     {
         var client = await _readOnlyClientRepository.Exists(request.ClientId);
+        var existsReservationClientPeriod = await _readOnlyClientRepository.ExistsCheckinPeriod(request.CheckIn, request.CheckOut);
+        if (existsReservationClientPeriod)
+        {
+            throw new DomainException("Já existe reservar para o cliente no período informado");
+        }
         if (!client)
         {
-            throw new DomainException(ResourceMessages.ClienteNaoEncontrado);
+            throw new NotFoundException(ResourceMessages.ClienteNaoEncontrado);
         }
-        var existsCheckin = await _readOnlyReservationRepository.ExistsCheckin(request.CheckIn);
-        var existsCheckout = await _readOnlyReservationRepository.ExistsCheckout(request.CheckOut);
+
+        var existsRoom = await _readOnlyRoomRepository.Exists(request.RoomId);
         
-        if (existsCheckin || existsCheckout)
+        if (!existsRoom)
         {
-            throw new DomainException(ResourceMessages.ReservaJaCadastrada);
+            throw new DomainException("RoomId não existe!");
         }
         
-        var dailyRate = GetDailyRateByType(request.Type);
-        
+        var room = await _readOnlyRoomRepository.GetById(request.RoomId);
+        var occupiedCount = await _readOnlyRoomRepository.GetOccupancyCountAsync(
+            request.RoomId, 
+            request.CheckIn, 
+            request.CheckOut
+        );
+
+        if ((occupiedCount + 1) > room.QtyRoom) 
+        {
+            throw new DomainException("Não há disponibilidade para este período.");
+        }
+
         var reservation = Domain.Entities.Reservation.Create(
-            request.Type, 
+            request.RoomId,
             request.CheckIn, 
             request.CheckOut, 
-            dailyRate, 
-            request.ClientId);
+            request.ClientId,
+            request.AgreedDailyRate);
         
         await _writeOnlyReservationRepository.Add(reservation);
         
         return new RegisterReservationUseCaseResponse{
+            RoomId = request.RoomId,
             Id = request.ClientId,
             CheckIn = request.CheckIn,
             CheckOut = request.CheckOut,
-            TotalPrice = reservation.TotalPrice
+            DailyValue = reservation.AgreedDailyRate
             };
-    }
-    private decimal GetDailyRateByType(TypeRoomReservationEnum type)
-    {
-        return type switch
-        {
-            TypeRoomReservationEnum.luxury => 100.00m,
-            TypeRoomReservationEnum.couple => 250.00m,
-            TypeRoomReservationEnum.single => 80.00m,
-            _ => 150.00m
-        };
     }
 }

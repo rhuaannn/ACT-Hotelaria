@@ -8,45 +8,70 @@ namespace ACT_Hotelaria.Domain.Entities;
 
 public sealed class Reservation : BaseEntity
 {
-    public TypeRoomReservationEnum Type { get; private set; }
+    private readonly List<Consumption> _consumptions = new();
     public DateTime Checkin { get; private set; } = DateTime.UtcNow;
     public DateTime Checkout { get; private set; }
-    public Price TotalPrice { get; private set; }
-    
+    public decimal AgreedDailyRate { get; private set; }
     public Guid ClientId { get; private set; }
     public Client Client { get; private set; }
+    public Guid RoomId { get; private set; }
+    public Room Room { get; private set; }
 
+    public IReadOnlyCollection<Consumption> Consumptions => _consumptions.AsReadOnly();
     private Reservation()
     {
     }
-    private Reservation(TypeRoomReservationEnum type, DateTime checkin, DateTime checkout, decimal dailyRate, Guid clientId)    {
+    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate)    {
         
         if (clientId == Guid.Empty)
             throw new DomainException(ResourceMessages.ClienteObrigatorio);
         
         validateCheckin(checkin, checkout);
-        
-        Type = type;
+        RoomId = roomId;
         Checkin = checkin;
         Checkout = checkout;
         ClientId = clientId;
+        AgreedDailyRate = agreedDailyRate;
         
-        CalculatePrice(dailyRate);
     }
 
-    public static Reservation Create(TypeRoomReservationEnum type, 
-                                    DateTime checkin, DateTime checkout, 
-                                    decimal dailyRate, Guid clientId)
+    public static Reservation Create(Guid RoomId, DateTime checkin, DateTime checkout, 
+                                     Guid clientId, decimal agreedDailyRate)
     {
-        return new Reservation(type, checkin, checkout, dailyRate, clientId);
+        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate);
     }
 
-    private void CalculatePrice(decimal dailyRate)
+    internal decimal CalculateTotalPrice()
     {
         var days = (Checkout - Checkin).Days; 
         if (days <= 0) days = 1;
-        TotalPrice = Price.Create(days * dailyRate);
+    
+        return days * AgreedDailyRate;
     }
+    
+    public void AddConsumption(Product product, int qtyRequested)
+    {
+        if (qtyRequested <= 0)
+        {
+            throw new DomainException(ResourceMessages.PrecoMaiorQueZero);
+        }
+        
+        if (DateTime.UtcNow.Date > Checkout.Date)
+        {
+            throw new DomainException(ResourceMessages.CheckoutObrigatorio);
+        }
+    
+        if (DateTime.UtcNow.Date < Checkin.Date)
+        {
+            throw new DomainException(ResourceMessages.CheckinObrigatorio);
+        }
+
+        var consumption = Consumption.Create(this.Id, product.Id, qtyRequested, product.ValueProduct.Value);
+         _consumptions.Add(consumption);
+        
+         product.ReduceStock(qtyRequested);
+    }
+    
 
     private void validateCheckin(DateTime checkin, DateTime checkout)
     {

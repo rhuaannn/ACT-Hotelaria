@@ -1,55 +1,47 @@
+using ACT_Hotelaria.ApiResponse;
 using ACT_Hotelaria.Application.UseCase.Client;
 using ACT_Hotelaria.Application.UseCase.Client.GetAll;
 using ACT_Hotelaria.Application.UseCase.Client.GetById;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class ClientController : BaseController
+public class ClientController(IMediator mediator) : BaseController(mediator)
 {
-    private readonly RegisterClientUseCase _registerClientUseCase;
-    private readonly GetAllClientUseCase _getAllClientUseCase;
-    private readonly GetByIdClientUseCase _getByIdClientUseCase;
-
-    public ClientController(RegisterClientUseCase registerClientUseCase, 
-        GetByIdClientUseCase getByIdClientUseCase,
-        GetAllClientUseCase getAllClientUseCase
-       )
-    {
-        _registerClientUseCase = registerClientUseCase;
-        _getAllClientUseCase = getAllClientUseCase;
-        _getByIdClientUseCase = getByIdClientUseCase;
-    }
-
+    
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<RegisterClientUseCaseResponse>),StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUseCaseRequest request)
     {
-        var response = await _registerClientUseCase.Handle(request);
+        var response = await _mediator.Send(request);
         return CreatedAtAction(nameof(RegisterClient), new { id = response }, response);
         
     }
 
     [HttpGet]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetAllClientResponse>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllClients()
     {
-        var clients = await _getAllClientUseCase.Handle();
+        var query = new GetAllQueryClientUseCase();
+        var clients = await _mediator.Send(query);
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllClientResponse>>
-            .SuccesResponse(clients);        
+            .SuccesResponse(clients, 200);        
         return Ok(response);
     }
 
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var client = await _getByIdClientUseCase.Handle(id);
-        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(client);
+        var query = new GetByIdQueryClientUseCase(id);
+        var result = await _mediator.Send(query);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdClientUseCaseResponse>.SuccesResponse(result, 200);
         return Ok(response);
     }
+    
 }

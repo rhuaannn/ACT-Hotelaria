@@ -1,6 +1,10 @@
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
-using ACT_Hotelaria.Domain.Repository.cs.Reservation;
+using ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
+using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
+using ACT_Hotelaria.Domain.Repository.ProductRepository;
+using ACT_Hotelaria.Domain.Repository.Reservation;
+using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.SqlServer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +22,14 @@ public static class DependencyInjection
         services.AddScoped<IReadOnlyReservationRepository, ReservationRepository>();
         services.AddScoped<IWriteOnlyReservationRepository, ReservationRepository>();
         services.AddScoped<IReadOnlyDependentRepository, DependentRepository>();
+        services.AddScoped<IReadOnlyProductRepository, ProductRepository>();
+        services.AddScoped<IWriteOnlyProductRepository, ProductRepository>();
+        services.AddScoped<IWriteOnlyConsumptionRepository, ConsumptionRepository>();
+        services.AddScoped<IWriteOnlyInvoiceRepository, InvoicingRepository>();
+        services.AddScoped<IWriteOnlyRoomRepository, RoomRepository>();
+        services.AddScoped<IReadOnlyRoomRepository, RoomRepository>();
+        services.AddScoped<IReadOnlyConsumptionRepository, ConsumptionRepository>();
+        
         
         return services;
     } 

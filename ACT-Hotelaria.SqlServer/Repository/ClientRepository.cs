@@ -65,6 +65,13 @@ public class ClientRepository : IReadOnlyClientRepository, IWriteOnlyClientRepos
         return await Task.FromResult(false);
     }
 
+    public async Task<bool> ExistsCheckinPeriod(DateTime checkin, DateTime checkout)
+    {
+        var exists = _context.Reservations.Any(r => r.Checkin >= checkin && r.Checkout <= checkout);
+        if(exists) return await Task.FromResult(true);
+        return await Task.FromResult(false);
+    }
+
     public void Update(Client client)
     {
        _context.Clients.Update(client);

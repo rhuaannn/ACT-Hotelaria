@@ -1,9 +1,11 @@
 using System.Net;
 using System.Text.Json;
+using ACT_Hotelaria.ApiResponse;  
+using ACT_Hotelaria.Domain.Exception;
 
 namespace ACT_Hotelaria.Middleware;
 
-   public class GlobalErrorHandlingMiddleware
+public class GlobalErrorHandlingMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<GlobalErrorHandlingMiddleware> _logger;
@@ -18,12 +20,10 @@ namespace ACT_Hotelaria.Middleware;
     {
         try
         {
-            // Passa a requisição para frente
             await _next(context);
         }
         catch (Exception ex)
         {
-            // Se algo explodir em qualquer lugar depois daqui, cai aqui
             _logger.LogError(ex, "Ocorreu um erro não tratado na aplicação.");
             await HandleExceptionAsync(context, ex);
         }
@@ -33,40 +33,39 @@ namespace ACT_Hotelaria.Middleware;
     {
         context.Response.ContentType = "application/json";
 
-        // Defina o status code padrão (500 - Erro interno)
         var statusCode = (int)HttpStatusCode.InternalServerError;
         var message = "Ocorreu um erro interno no servidor.";
         
-        // Aqui você pode personalizar baseado no tipo de erro (muito útil para DDD)
         switch (exception)
         {
-            // Exemplo: Se for uma exceção de domínio (validação), retorna 400
             case ArgumentException: 
-            // case DomainException: // (Se você tiver uma classe base para suas exceptions de domínio)
-                statusCode = (int)HttpStatusCode.BadRequest;
-                message = exception.Message; // Mostra a mensagem real do erro de validação
+                statusCode = (int)HttpStatusCode.BadRequest; 
+                message = exception.Message;
                 break;
-                
-            case KeyNotFoundException:
-                statusCode = (int)HttpStatusCode.NotFound;
-                message = "Recurso não encontrado.";
+
+            case KeyNotFoundException: 
+                statusCode = (int)HttpStatusCode.NotFound; 
+                message = exception.Message;
                 break;
-                
-            // Adicione outros cases conforme necessário
+
+            case BaseException baseException:
+                statusCode = (int)baseException.StatusCode;
+                message = baseException.Message;
+                break;
         }
 
         context.Response.StatusCode = statusCode;
+        
+        var errors = new List<string> { message };
+ 
+        var responseModel = ApiResponse<object>.ErrorResponse(errors, statusCode);
 
-        // CRUCIAL: Aqui usamos o SEU formato de resposta para manter consistência
-        // Supondo que seu ApiResponse tenha propriedades como Success, Message, Data
-        var responseModel = new 
-        {
-            Success = false,
-            Message = message,
-            Errors = new[] { exception.Message } // Opcional: detalhes técnicos (cuidado em produção)
+        var jsonOptions = new JsonSerializerOptions 
+        { 
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase 
         };
-
-        var jsonResponse = JsonSerializer.Serialize(responseModel);
+        
+        var jsonResponse = JsonSerializer.Serialize(responseModel, jsonOptions);
         
         return context.Response.WriteAsync(jsonResponse);
     }

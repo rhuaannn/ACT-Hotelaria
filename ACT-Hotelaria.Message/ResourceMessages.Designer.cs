@@ -110,5 +110,41 @@ namespace ACT_Hotelaria.Message {
                 return ResourceManager.GetString("ClienteNaoEncontrado", resourceCulture);
             }
         }
+        
+        public static string CPFJaCadastrado {
+            get {
+                return ResourceManager.GetString("CPFJaCadastrado", resourceCulture);
+            }
+        }
+        
+        public static string PreenchimentoDependenteObrigatorio {
+            get {
+                return ResourceManager.GetString("PreenchimentoDependenteObrigatorio", resourceCulture);
+            }
+        }
+        
+        public static string CPFObrigatorio {
+            get {
+                return ResourceManager.GetString("CPFObrigatorio", resourceCulture);
+            }
+        }
+        
+        public static string PrecoMaiorQueZero {
+            get {
+                return ResourceManager.GetString("PrecoMaiorQueZero", resourceCulture);
+            }
+        }
+        
+        public static string TelefoneNumero {
+            get {
+                return ResourceManager.GetString("TelefoneNumero", resourceCulture);
+            }
+        }
+        
+        public static string ReservaNaoEncontrada {
+            get {
+                return ResourceManager.GetString("ReservaNaoEncontrada", resourceCulture);
+            }
+        }
     }
 }

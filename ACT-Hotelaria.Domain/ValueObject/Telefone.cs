@@ -1,4 +1,6 @@
 using System.Text.RegularExpressions;
+using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.ValueObject;
 
@@ -10,19 +12,19 @@ public sealed record Telefone
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentNullException(nameof(value), "O telefone não pode ser vazio.");
+            throw new DomainException(ResourceMessages.TelefoneObrigatorio);
         }
         
         var apenasNumeros = NumberRegex.Replace(value, "");
         
         if (apenasNumeros.Length != 11)
         {
-            throw new ArgumentException("Telefone inválido: deve conter DDD + 9 dígitos.");
+            throw new DomainException(ResourceMessages.TelefoneNumero);
         }
         
         if (new string(apenasNumeros[0], 11) == apenasNumeros)
         {
-            throw new ArgumentException("Telefone inválido: números repetidos.");
+            throw new DomainException(ResourceMessages.TelefoneNumero);
         }
 
         Value = apenasNumeros;

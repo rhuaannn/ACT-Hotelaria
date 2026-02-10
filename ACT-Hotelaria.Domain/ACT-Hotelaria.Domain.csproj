@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Event\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Repository.cs\DependentRepository\IWriteOnlyDependentRepository.cs" />
     </ItemGroup>
 

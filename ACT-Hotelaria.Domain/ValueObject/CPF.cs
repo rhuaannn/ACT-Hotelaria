@@ -1,4 +1,6 @@
 using System.Text.RegularExpressions;
+using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.ValueObject;
 
@@ -9,12 +11,12 @@ public sealed record Cpf
     public Cpf(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            throw new ArgumentNullException(nameof(value), "CPF não pode ser vazio.");
+            throw new DomainException(ResourceMessages.CPFObrigatorio);
 
         var apenasNumeros = Utils.SomenteNumeros(value);
 
         if (!ValidarCpf(apenasNumeros))
-            throw new ArgumentException("CPF inválido.");
+            throw new DomainException(ResourceMessages.CPFObrigatorio);
 
         Value = apenasNumeros;
     }

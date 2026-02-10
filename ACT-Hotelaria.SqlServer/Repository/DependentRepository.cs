@@ -1,5 +1,6 @@
 using ACT_Hotelaria.Domain.Entities;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
+using ACT_Hotelaria.Domain.ValueObject;
 using Microsoft.EntityFrameworkCore;
 
 namespace ACT_Hotelaria.SqlServer.Repository;
@@ -29,5 +30,12 @@ public class DependentRepository : IReadOnlyDependentRepository
             .AsNoTracking()
             .ToListAsync();
         return dependents;
+    }
+
+    public async Task<bool> ExistsCpf(Cpf cpf)
+    {
+        var exists = await _context.Dependents.AnyAsync(d => d.CPF == cpf);
+        if(exists) return true;
+        return false;
     }
 }
