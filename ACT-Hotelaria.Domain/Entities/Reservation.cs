@@ -60,11 +60,6 @@ public sealed class Reservation : BaseEntity
         {
             throw new DomainException(ResourceMessages.CheckoutObrigatorio);
         }
-    
-        if (DateTime.UtcNow.Date < Checkin.Date)
-        {
-            throw new DomainException(ResourceMessages.CheckinObrigatorio);
-        }
 
         var consumption = Consumption.Create(this.Id, product.Id, qtyRequested, product.ValueProduct.Value);
          _consumptions.Add(consumption);

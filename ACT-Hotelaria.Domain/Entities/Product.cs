@@ -26,7 +26,7 @@ public class Product : BaseEntity
     {
         return new Product(name, qtyProduct, valueProduct);
     }
-    public void ReduceStock(int qtyProduct)
+    internal void ReduceStock(int qtyProduct)
     {
         if (qtyProduct > QtyProduct) throw new DomainException("Estoque insuficiente.");
         QtyProduct -= qtyProduct;
