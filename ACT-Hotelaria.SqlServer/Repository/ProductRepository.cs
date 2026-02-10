@@ -21,14 +21,16 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
         return product;
     }
 
-    public Task<IEnumerable<Product>> GetAll()
+    public async Task<IEnumerable<Product>> GetAll()
     {
-        throw new NotImplementedException();
+       var productAll = await _context.Products.ToListAsync();
+       return productAll;
     }
 
     public Task<bool> Exists(Guid id)
     {
-        throw new NotImplementedException();
+       var existis = _context.Products.AnyAsync(p => p.Id == id);
+       return existis;
     }
 
     public async Task Add(Product product)

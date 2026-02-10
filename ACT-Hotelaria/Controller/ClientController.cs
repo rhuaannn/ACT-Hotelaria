@@ -1,3 +1,4 @@
+using ACT_Hotelaria.ApiResponse;
 using ACT_Hotelaria.Application.UseCase.Client;
 using ACT_Hotelaria.Application.UseCase.Client.GetAll;
 using ACT_Hotelaria.Application.UseCase.Client.GetById;
@@ -11,8 +12,8 @@ public class ClientController(IMediator mediator) : BaseController(mediator)
 {
     
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<RegisterClientUseCaseResponse>),StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUseCaseRequest request)
     {
         var response = await _mediator.Send(request);

@@ -9,4 +9,4 @@ public class GetByIdQueryClientUseCase : IQuery<GetByIdClientUseCaseResponse>
     public GetByIdQueryClientUseCase(Guid id) => Id = id;
 }
 
- 
+  
