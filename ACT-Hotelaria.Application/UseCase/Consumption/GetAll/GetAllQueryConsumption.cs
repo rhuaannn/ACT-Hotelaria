@@ -5,5 +5,4 @@ namespace ACT_Hotelaria.Application.UseCase.Consumption.GetAll;
 
 public class GetAllQueryConsumption : IQuery<IEnumerable<GetAllConsumptionUseCaseResponse>>
 {
-    
 }
