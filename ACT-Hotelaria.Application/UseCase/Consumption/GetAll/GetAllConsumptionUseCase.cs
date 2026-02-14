@@ -19,7 +19,7 @@ public class GetAllConsumptionUseCase :IQueryHandler<GetAllQueryConsumption, IEn
         var response = consumptions.Select(consumption => new GetAllConsumptionUseCaseResponse
         {
             Id = consumption.Id,
-            Name = consumption.ProductId.ToString(),
+            ProductId = consumption.ProductId,
             Quantity = consumption.QtyProduct,
             Value = consumption.TotalValue
         });

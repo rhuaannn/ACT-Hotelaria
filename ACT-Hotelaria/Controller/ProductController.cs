@@ -20,6 +20,8 @@ public class ProductController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllProductUseCaseResponse>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllProducts(CancellationToken cancellationToken = default)
     {
         var query = new GetAllQueryProduct();
