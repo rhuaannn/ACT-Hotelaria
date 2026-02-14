@@ -1,6 +1,7 @@
 using ACT_Hotelaria.ApiResponse;
 using ACT_Hotelaria.Application.UseCase.Consumption;
 using ACT_Hotelaria.Application.UseCase.Consumption.GetAll;
+using ACT_Hotelaria.Application.UseCase.Consumption.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,16 @@ public class ConsumptionController(IMediator mediator) : BaseController(mediator
     public async Task<IActionResult> GetAllConsumption()
     {
         var query = new GetAllQueryConsumption();
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdConsumptionUseCaseResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetByIdConsumption(Guid id)
+    {
+        var query = new GetByIdQueryConsumption(id);
         var result = await _mediator.Send(query);
         return Ok(result);
     }

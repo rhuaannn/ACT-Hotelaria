@@ -31,8 +31,9 @@ public class ConsumptionRepository : IWriteOnlyConsumptionRepository, IReadOnlyC
         return consumption;
     }
 
-    public Task<Consumption> GetByIdAsync(Guid id)
+    public async Task<Consumption> GetByIdAsync(Guid id)
     {
-        throw new NotImplementedException();
+        var consumption = await _context.Consumptions.FirstOrDefaultAsync(c => c.Id == id);
+        return consumption;
     }
 }

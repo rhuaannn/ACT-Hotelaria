@@ -1,7 +1,5 @@
 using ACT_Hotelaria.Domain.Abstract;
-using ACT_Hotelaria.Domain.Enum;
 using ACT_Hotelaria.Domain.Exception;
-using ACT_Hotelaria.Domain.ValueObject;
 using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.Entities;
@@ -59,11 +57,6 @@ public sealed class Reservation : BaseEntity
         if (DateTime.UtcNow.Date > Checkout.Date)
         {
             throw new DomainException(ResourceMessages.CheckoutObrigatorio);
-        }
-    
-        if (DateTime.UtcNow.Date < Checkin.Date)
-        {
-            throw new DomainException(ResourceMessages.CheckinObrigatorio);
         }
 
         var consumption = Consumption.Create(this.Id, product.Id, qtyRequested, product.ValueProduct.Value);
