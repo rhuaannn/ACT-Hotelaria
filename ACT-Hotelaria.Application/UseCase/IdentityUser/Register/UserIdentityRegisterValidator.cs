@@ -8,6 +8,7 @@ public class UserIdentityRegisterValidator : AbstractValidator<UserIdentityrRegi
     {
         RuleFor(x => x.Email).NotEmpty().EmailAddress();
         RuleFor(x => x.Password).NotEmpty();
-        RuleFor(x => x.ConfirmPassword).Equal(x => x.Password); 
+        RuleFor(x => x.ConfirmPassword).Equal(x => x.Password)
+            .WithMessage("Senhas não conferem!"); 
     }
 }

@@ -4,7 +4,6 @@ using ACT_Hotelaria.Middleware;
 using ACT_Hotelaria.Redis.DI;
 using ACT_Hotelaria.Redis.Settings;
 using ACT_Hotelaria.SqlServer.DI;
-using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
@@ -35,5 +34,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
+ 
 app.MapControllers();
 app.Run();
