@@ -7,13 +7,14 @@ namespace ACT_Hotelaria.Controller;
 
 public class AuthController(IMediator mediator) : BaseController(mediator)
 {
-    [HttpPost]
+    [HttpPost("register")]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<UserIdentityRegisterUseCaseResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>), StatusCodes.Status400BadRequest)]
 
     public async Task<IActionResult> RegisterUser(UserIdentityrRegisterRequest register)
     {
-        var response = await _mediator.Send(register);
+        var result = await _mediator.Send(register);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<UserIdentityRegisterUseCaseResponse>.SuccesResponse(result, 201);
         return Created(string.Empty, response);
     }
     [HttpPost("login")]

@@ -1,3 +1,4 @@
+using ACT_Hotelaria.Domain.Exception;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 
@@ -20,7 +21,11 @@ public class UserIdentityRegisterUseCase :IRequestHandler<UserIdentityrRegisterR
             Email = request.Email,
             EmailConfirmed = true
         };
-         await _userManager.CreateAsync(user, request.Password);
+         var result = await _userManager.CreateAsync(user, request.Password);
+         if (!result.Succeeded)
+         {
+             throw new DomainException($"Falha ao criar usuário");
+         }
         return new UserIdentityRegisterUseCaseResponse
         {
             Email = request.Email

@@ -15,10 +15,16 @@ public class UserIdentityLoginUseCase : IRequestHandler<UserIdentityLoginUseCase
     
     public async Task<UserIdentityLoginUseCaseResponse> Handle(UserIdentityLoginUseCaseRequest request, CancellationToken cancellationToken)
     {
-       var loginUser = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
+       var loginUser = await _signInManager.PasswordSignInAsync(request.Email, request.Password, 
+                                                                    false, true);
        if (!loginUser.Succeeded)
        {
            throw new DomainException("Dados inválidos!");
+       }
+
+       if (loginUser.IsLockedOut)
+       {
+           throw new DomainException("Usuário bloqueado por tentativas inválidas de credenciaiais");
        }
        return new UserIdentityLoginUseCaseResponse
        {
