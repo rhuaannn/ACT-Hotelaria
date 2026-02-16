@@ -22,6 +22,9 @@ public class AuthController(IMediator mediator) : BaseController(mediator)
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult>LoginUser(UserIdentityLoginUseCaseRequest request, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(request));
+        var result = await _mediator.Send(request);
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<UserIdentityLoginUseCaseResponse>.SuccesResponse(result, 200);
+        return Ok(response);
+        
     }
 }

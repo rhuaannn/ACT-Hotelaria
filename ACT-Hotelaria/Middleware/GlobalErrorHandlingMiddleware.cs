@@ -48,10 +48,12 @@ public class GlobalErrorHandlingMiddleware
                 statusCode = (int)HttpStatusCode.NotFound; 
                 message = exception.Message;
                 break;
+            
             case ValidationException validationException:
                 statusCode = (int)HttpStatusCode.BadRequest;
                 message = validationException.Errors.First().ErrorMessage;
                 break;
+            
             case BaseException baseException:
                 statusCode = (int)baseException.StatusCode;
                 message = baseException.Message;
