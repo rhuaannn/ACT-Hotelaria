@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ACT-Hotelaria.Application\ACT-Hotelaria.Application.csproj" />
+      <ProjectReference Include="..\ACT-Hotelaria.Auth\ACT-Hotelaria.Auth.csproj" />
       <ProjectReference Include="..\ACT-Hotelaria.Redis\ACT-Hotelaria.Redis.csproj" />
       <ProjectReference Include="..\ACT-Hotelaria.SqlServer\ACT-Hotelaria.SqlServer.csproj" />
     </ItemGroup>

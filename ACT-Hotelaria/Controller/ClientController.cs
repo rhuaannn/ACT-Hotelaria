@@ -4,6 +4,7 @@ using ACT_Hotelaria.Application.UseCase.Client.GetAll;
 using ACT_Hotelaria.Application.UseCase.Client.GetById;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
@@ -12,6 +13,7 @@ public class ClientController(IMediator mediator) : BaseController(mediator)
 {
     
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<RegisterClientUseCaseResponse>),StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUseCaseRequest request)
@@ -22,6 +24,7 @@ public class ClientController(IMediator mediator) : BaseController(mediator)
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetAllClientResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllClients()
