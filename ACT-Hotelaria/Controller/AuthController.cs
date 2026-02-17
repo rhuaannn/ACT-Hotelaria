@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class AuthController(IMediator mediator) : BaseController(mediator)
+public sealed class AuthController(IMediator mediator) : BaseController(mediator)
 {
     [HttpPost("register")]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<UserIdentityRegisterUseCaseResponse>), StatusCodes.Status201Created)]

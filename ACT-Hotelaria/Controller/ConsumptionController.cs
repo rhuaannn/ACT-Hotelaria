@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class ConsumptionController(IMediator mediator) : BaseController(mediator)
+public sealed class ConsumptionController(IMediator mediator) : BaseController(mediator)
 {
     
     [HttpPost]

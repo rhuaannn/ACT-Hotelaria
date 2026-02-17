@@ -12,7 +12,7 @@ public static class DependencyInjection
     {
         services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Sua API", Version = "v1" });
+            options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ACT-Hotelaria", Version = "v1" });
     
             options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
             {
@@ -39,5 +39,10 @@ public static class DependencyInjection
                 }
             });
         });
+    }
+
+    private static void ApplyMigrate(this IServiceCollection service)
+    {
+        
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class ProductController(IMediator mediator) : BaseController(mediator)
+public sealed class ProductController(IMediator mediator) : BaseController(mediator)
 {
 
     [HttpPost]

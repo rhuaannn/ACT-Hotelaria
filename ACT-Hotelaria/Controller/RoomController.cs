@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class RoomController(IMediator mediator) : BaseController(mediator)
+public sealed class RoomController(IMediator mediator) : BaseController(mediator)
 {
     private readonly RegisterRoomUseCase _registerRoomUseCase;
     

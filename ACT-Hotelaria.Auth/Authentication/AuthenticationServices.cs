@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using ACT_Hotelaria.Application.Abstract.Authentication;
 using ACT_Hotelaria.Application.Settings;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,21 +12,21 @@ namespace ACT_Hotelaria.Auth.Authentication;
 public class AuthenticationServices : IAuthenticationServices
 {
     private readonly JwtSettings _jwtSettings;
-    
     public AuthenticationServices(IOptions<JwtSettings> jwtSettings)
     {
         _jwtSettings = jwtSettings.Value;
     }
-
     public string GenerateToken(string username)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_jwtSettings.SecretKey);
 
+        
         var claims = new List<Claim>
         {
             new(ClaimTypes.Email, username),
         };
+
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
