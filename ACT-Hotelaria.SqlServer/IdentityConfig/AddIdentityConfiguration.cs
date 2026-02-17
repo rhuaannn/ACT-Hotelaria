@@ -1,10 +1,10 @@
-using ACT_Hotelaria.SqlServer;
+using ACT_Hotelaria.Domain.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ACT_Hotelaria.Infra.IdentityConfig;
+namespace ACT_Hotelaria.SqlServer.IdentityConfig;
 
 public static class AddIdentityConfiguration
 {
@@ -13,7 +13,7 @@ public static class AddIdentityConfiguration
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddDefaultIdentity<IdentityUser>()
+        services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();

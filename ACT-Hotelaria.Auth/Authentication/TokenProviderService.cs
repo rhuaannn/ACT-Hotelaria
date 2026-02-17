@@ -18,5 +18,4 @@ public class TokenProviderService : ITokenProvider
 
             return authentication["Bearer ".Length..].Trim();
         }
-        
 }

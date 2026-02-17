@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using ACT_Hotelaria.Application.DI;
 using ACT_Hotelaria.Auth.DI;
 using ACT_Hotelaria.DI;
+using ACT_Hotelaria.Domain.Model;
 using ACT_Hotelaria.Middleware;
 using ACT_Hotelaria.Redis.DI;
 using ACT_Hotelaria.Redis.Settings;
@@ -23,6 +24,7 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.Configure<Settings>(
         builder.Configuration.GetSection("CacheSettings"));
+
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddAuth(builder.Configuration);
