@@ -11,7 +11,6 @@ namespace ACT_Hotelaria.Controller;
 
 public sealed class ClientController(IMediator mediator) : BaseController(mediator)
 {
-    
     [HttpPost]
     [Authorize]
     [ProducesResponseType(typeof(ApiResponse<RegisterClientUseCaseResponse>),StatusCodes.Status201Created)]

@@ -30,6 +30,11 @@ public class RefreshTokenUseCase : IRequestHandler<RefreshTokenUseCaseRequest, R
         {
             throw new DomainException("Refresh Token inválido ou expirado.");
         }
+
+        if (user.RefreshToken != request.RefreshToken)
+        {
+            throw new DomainException("Refresh Token inválido.");
+        }
         var newAccessToken = _authenticationServices.GenerateToken(user);
         var newRefreshToken = _authenticationServices.RefreshTokenGenerate();
 

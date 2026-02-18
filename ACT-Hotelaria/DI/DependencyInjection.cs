@@ -7,7 +7,6 @@ public static class DependencyInjection
         services.AddSwaggerConfiguration();
         return services;
     }
-
     private static void AddSwaggerConfiguration(this IServiceCollection services)
     {
         services.AddSwaggerGen(options =>
@@ -39,10 +38,5 @@ public static class DependencyInjection
                 }
             });
         });
-    }
-
-    private static void ApplyMigrate(this IServiceCollection service)
-    {
-        
     }
 }
