@@ -23,9 +23,12 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.Configure<Settings>(
         builder.Configuration.GetSection("CacheSettings"));
+
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddAuth(builder.Configuration);
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "ACT-Hotelaria-SQLServer");
 
 var app = builder.Build();
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
@@ -38,5 +41,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication(); 
 app.UseAuthorization();  
+app.MapHealthChecks("/health");
 app.MapControllers();
 app.Run();

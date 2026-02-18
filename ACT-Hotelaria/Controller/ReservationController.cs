@@ -1,13 +1,15 @@
 using ACT_Hotelaria.Application.UseCase.Reservation;
 using ACT_Hotelaria.Application.UseCase.Reservation.GetAll;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class ReservationController(IMediator mediator) : BaseController(mediator)
+public sealed class ReservationController(IMediator mediator) : BaseController(mediator)
 {
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>),StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterReservation([FromBody] RegisterReservationUseCaseRequest request)
@@ -19,6 +21,7 @@ public class ReservationController(IMediator mediator) : BaseController(mediator
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<RegisterReservationUseCaseResponse>),StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllReservation(CancellationToken cancellationToken = default)

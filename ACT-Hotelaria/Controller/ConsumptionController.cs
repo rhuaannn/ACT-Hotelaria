@@ -3,14 +3,16 @@ using ACT_Hotelaria.Application.UseCase.Consumption;
 using ACT_Hotelaria.Application.UseCase.Consumption.GetAll;
 using ACT_Hotelaria.Application.UseCase.Consumption.GetById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ACT_Hotelaria.Controller;
 
-public class ConsumptionController(IMediator mediator) : BaseController(mediator)
+public sealed class ConsumptionController(IMediator mediator) : BaseController(mediator)
 {
     
     [HttpPost]
+    [Authorize]
     [ProducesResponseType(typeof(ApiResponse<RegisterConsumptionUseCaseResponse>),StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterConsumption(RegisterConsumptionUseCaseRequest request, CancellationToken cancellationToken = default)
@@ -19,6 +21,7 @@ public class ConsumptionController(IMediator mediator) : BaseController(mediator
     }
 
     [HttpGet]
+    [Authorize]
     [ProducesResponseType(typeof(IEnumerable<GetAllConsumptionUseCaseResponse>),StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse<string>),StatusCodes.Status204NoContent)]
     public async Task<IActionResult> GetAllConsumption()
@@ -29,6 +32,7 @@ public class ConsumptionController(IMediator mediator) : BaseController(mediator
     }
 
     [HttpGet("{id}")]
+    [Authorize]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdConsumptionUseCaseResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ACT_Hotelaria.ApiResponse.ApiResponse<string>),StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByIdConsumption(Guid id)

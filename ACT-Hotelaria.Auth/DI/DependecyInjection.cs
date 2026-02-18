@@ -49,7 +49,6 @@ public static class DependecyInjection
                 };
             });
     }
-
     private static void AddAuthenticationServices(this IServiceCollection services)
     {
         services.AddScoped<IAuthenticationServices, AuthenticationServices>();

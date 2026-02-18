@@ -6,6 +6,7 @@ using ACT_Hotelaria.Domain.ValueObject;
 using ACT_Hotelaria.Message;
 using ACT_Hotelaria.Redis.Repository;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace ACT_Hotelaria.Application.UseCase.Client;
 
@@ -14,11 +15,12 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
     private readonly IWriteOnlyClientRepository _clientRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyDependentRepository _readOnlyDependetRepository;
-
+    private readonly ILogger<RegisterClientUseCase> _logger;
     
     public RegisterClientUseCase(IWriteOnlyClientRepository clientRepository,
         IReadOnlyClientRepository readOnlyClientRepository,
-        IReadOnlyDependentRepository readOnlyDependetRepository
+        IReadOnlyDependentRepository readOnlyDependetRepository,
+        ILogger<RegisterClientUseCase> logger
         )
     {
         _clientRepository = clientRepository;
@@ -37,6 +39,7 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
 
         if (exists)
         {
+            _logger.LogError(JsonSerializer.Serialize(client));
             throw new DomainException(ResourceMessages.CPFJaCadastrado);
         }
         
@@ -46,6 +49,7 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
             {
                 if (string.IsNullOrWhiteSpace(dep.CPF) || string.IsNullOrWhiteSpace(dep.Name))
                 {
+                    _logger.LogError(JsonSerializer.Serialize(dep));
                     throw new DomainException(ResourceMessages.PreenchimentoDependenteObrigatorio);
                 }
 
@@ -59,7 +63,7 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
             }
         }
         await _clientRepository.Add(client);
-
+        _logger.LogInformation($"Cliente {client.Name} cadastrado com sucesso!");
         return new RegisterClientUseCaseResponse
         {
             Id = client.Id,
