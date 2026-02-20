@@ -11,11 +11,11 @@ public class RegisterProductUseCase : IRequestHandler<RegisterProductUseCaseRequ
     private readonly ILogger<RegisterProductUseCase> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
-    public RegisterProductUseCase(IWriteOnlyProductRepository iWriteOnlyProductRepository, 
+    public RegisterProductUseCase(IWriteOnlyProductRepository WriteOnlyProductRepository, 
         ILogger<RegisterProductUseCase> logger,
         IUnitOfWork unitOfWork)
     {
-        _IWiriteProductRepository = iWriteOnlyProductRepository;
+        _IWiriteProductRepository = WriteOnlyProductRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
     }

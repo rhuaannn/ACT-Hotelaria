@@ -1,10 +1,7 @@
 using ACT_Hotelaria.Domain.Abstract;
-using ACT_Hotelaria.Domain.Exception;
-using MediatR;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ACT_Hotelaria.SqlServer;
-
 public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly ACT_HotelariaDbContext _context;
@@ -20,7 +17,6 @@ public sealed class UnitOfWork : IUnitOfWork
 
         _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
     }
-    
     public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
         if (_transaction == null) return;
@@ -29,7 +25,6 @@ public sealed class UnitOfWork : IUnitOfWork
         await _transaction.DisposeAsync();
         _transaction = null;
     }
-
     public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
     {
         try
@@ -54,14 +49,17 @@ public sealed class UnitOfWork : IUnitOfWork
     public void Dispose()
     {
         _transaction?.Dispose();
-        _context.Dispose();
+        GC.SuppressFinalize(this);
     }
 
     public async ValueTask DisposeAsync()
     {
         if (_transaction != null)
+        {
             await _transaction.DisposeAsync();
+        }
 
-        await _context.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
+    
 }
