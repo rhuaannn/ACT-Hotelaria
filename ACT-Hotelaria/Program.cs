@@ -2,9 +2,11 @@ using System.Text.Json.Serialization;
 using ACT_Hotelaria.Application.DI;
 using ACT_Hotelaria.Auth.DI;
 using ACT_Hotelaria.DI;
+using ACT_Hotelaria.Extension;
 using ACT_Hotelaria.Middleware;
 using ACT_Hotelaria.Redis.DI;
 using ACT_Hotelaria.Redis.Settings;
+using ACT_Hotelaria.SqlServer;
 using ACT_Hotelaria.SqlServer.DI;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,10 @@ builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "ACT-Hotelaria-SQLServer");
 
 var app = builder.Build();
+
+app.ApplyMigrations<ApplicationDbContext>();
+app.ApplyMigrations<ACT_HotelariaDbContext>();
+
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())

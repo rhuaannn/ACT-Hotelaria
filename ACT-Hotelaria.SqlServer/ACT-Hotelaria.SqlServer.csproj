@@ -27,4 +27,10 @@
       <ProjectReference Include="..\ACT-Hotelaria.Domain\ACT-Hotelaria.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="MediatR">
+        <HintPath>..\..\..\..\.nuget\packages\mediatr\14.0.0\lib\net8.0\MediatR.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
