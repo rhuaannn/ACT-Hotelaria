@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
@@ -16,16 +17,20 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyDependentRepository _readOnlyDependetRepository;
     private readonly ILogger<RegisterClientUseCase> _logger;
+    private readonly IUnitOfWork _unitOfWork;
     
     public RegisterClientUseCase(IWriteOnlyClientRepository clientRepository,
         IReadOnlyClientRepository readOnlyClientRepository,
         IReadOnlyDependentRepository readOnlyDependetRepository,
-        ILogger<RegisterClientUseCase> logger
+        ILogger<RegisterClientUseCase> logger,
+        IUnitOfWork unitOfWork
         )
     {
         _clientRepository = clientRepository;
         _readOnlyClientRepository = readOnlyClientRepository;
-        _readOnlyDependetRepository = readOnlyDependetRepository;;
+        _readOnlyDependetRepository = readOnlyDependetRepository;
+        _logger = logger;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<RegisterClientUseCaseResponse> Handle(RegisterClientUseCaseRequest request, CancellationToken cancellationToken)
@@ -60,9 +65,11 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
                     throw new DomainException(ResourceMessages.CPFJaCadastrado);
                 }
                 client.AddDependent(dep.Name, depCPF);
+
             }
         }
         await _clientRepository.Add(client);
+        await _unitOfWork.Commit();
         _logger.LogInformation($"Cliente {client.Name} cadastrado com sucesso!");
         return new RegisterClientUseCaseResponse
         {

@@ -1,3 +1,4 @@
+using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
@@ -31,6 +32,7 @@ public static class DependencyInjection
         services.AddScoped<IWriteOnlyRoomRepository, RoomRepository>();
         services.AddScoped<IReadOnlyRoomRepository, RoomRepository>();
         services.AddScoped<IReadOnlyConsumptionRepository, ConsumptionRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }
