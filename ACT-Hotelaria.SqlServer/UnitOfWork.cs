@@ -9,33 +9,59 @@ public sealed class UnitOfWork : IUnitOfWork
 {
     private readonly ACT_HotelariaDbContext _context;
     private IDbContextTransaction? _transaction;
-    private readonly IPublisher _publisher;
-    
+
     public UnitOfWork(ACT_HotelariaDbContext context)
     {
         _context = context;
     }
- 
-    public async Task<int> Commit()
+    public async Task BeginTransaction(CancellationToken cancellationToken = default)
     {
-        var result =  await _context.SaveChangesAsync();
-            if(_transaction == null)
-            {
-                throw new DomainException("Erro ao salvar dados");
-            }
-            return result;
-    }
+        if (_transaction != null) return;
 
-    public async Task Rollback()
+        _transaction = await _context.Database.BeginTransactionAsync(cancellationToken);
+    }
+    
+    public async Task RollbackAsync(CancellationToken cancellationToken = default)
     {
-        if (_transaction == null)
-        {
-            return;
-        }
-        await _transaction.RollbackAsync();
+        if (_transaction == null) return;
+
+        await _transaction.RollbackAsync(cancellationToken);
         await _transaction.DisposeAsync();
         _transaction = null;
     }
-    
-    public void Dispose() => _context.Dispose();
+
+    public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            var changes = await _context.SaveChangesAsync(cancellationToken);
+
+            if (_transaction != null)
+            {
+                await _transaction.CommitAsync(cancellationToken);
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+
+            return changes;
+        }
+        catch
+        {
+            await RollbackAsync(cancellationToken);
+            throw;
+        }
+    }
+    public void Dispose()
+    {
+        _transaction?.Dispose();
+        _context.Dispose();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_transaction != null)
+            await _transaction.DisposeAsync();
+
+        await _context.DisposeAsync();
+    }
 }

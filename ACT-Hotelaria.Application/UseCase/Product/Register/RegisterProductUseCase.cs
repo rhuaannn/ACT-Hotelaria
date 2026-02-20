@@ -24,7 +24,7 @@ public class RegisterProductUseCase : IRequestHandler<RegisterProductUseCaseRequ
     {
        var product = Domain.Entities.Product.Create(request.Name, request.Quantity, request.Value);
        await _IWiriteProductRepository.Add(product);
-       await _unitOfWork.Commit();
+       await _unitOfWork.CommitAsync(cancellationToken);
         _logger.LogInformation($"Produto {product.Name} cadastrado com sucesso");
        return new RegisterProductUseCaseResponse
        {

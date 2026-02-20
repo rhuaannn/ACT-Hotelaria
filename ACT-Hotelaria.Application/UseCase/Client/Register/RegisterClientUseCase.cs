@@ -5,7 +5,6 @@ using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.Domain.ValueObject;
 using ACT_Hotelaria.Message;
-using ACT_Hotelaria.Redis.Repository;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -69,7 +68,7 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
             }
         }
         await _clientRepository.Add(client);
-        await _unitOfWork.Commit();
+        await _unitOfWork.CommitAsync(cancellationToken);
         _logger.LogInformation($"Cliente {client.Name} cadastrado com sucesso!");
         return new RegisterClientUseCaseResponse
         {
