@@ -40,7 +40,8 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
         
         var client = Domain.Entities.Client.Create(request.Name, cpf, email, telefone);
         var exists = await _readOnlyClientRepository.ExistsCpf(cpf.Value);
-
+        
+      
         if (exists)
         {
             _logger.LogError(JsonSerializer.Serialize(client));

@@ -8,7 +8,7 @@ public class RegisterProductUseCaseValidator : AbstractValidator<RegisterProduct
     public RegisterProductUseCaseValidator()
     {
         RuleFor(p => p.Name).NotEmpty().WithMessage(ResourceMessages.NomeObrigatorio);
-        RuleFor(p => p.Quantity).GreaterThanOrEqualTo(1).WithMessage(ResourceMessages.PrecoMaiorQueZero);
-        RuleFor(p => p.Value).GreaterThanOrEqualTo(1).WithMessage(ResourceMessages.PrecoMaiorQueZero);       
+        RuleFor(p => p.Quantity).GreaterThanOrEqualTo(0).WithMessage(ResourceMessages.PrecoMaiorQueZero);
+        RuleFor(p => p.Value).GreaterThanOrEqualTo(0).WithMessage(ResourceMessages.PrecoMaiorQueZero);       
     }
 }
