@@ -68,7 +68,8 @@ public class AuthenticationServices : IAuthenticationServices
                 ValidateAudience = true,
                 ValidAudience = _jwtSettings.Audience,
                 ValidateLifetime = true,
-                ClockSkew = TimeSpan.Zero
+                ClockSkew = TimeSpan.Zero,
+                
             }, out SecurityToken validatedToken);
 
             return true;

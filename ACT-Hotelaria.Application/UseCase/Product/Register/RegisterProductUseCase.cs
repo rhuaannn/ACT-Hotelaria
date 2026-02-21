@@ -1,4 +1,5 @@
 using ACT_Hotelaria.Domain.Abstract;
+using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ProductRepository;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ public class RegisterProductUseCase : IRequestHandler<RegisterProductUseCaseRequ
     public async Task<RegisterProductUseCaseResponse> Handle(RegisterProductUseCaseRequest request, CancellationToken cancellationToken)
     {
        var product = Domain.Entities.Product.Create(request.Name, request.Quantity, request.Value);
+       
        await _IWiriteProductRepository.Add(product);
        await _unitOfWork.CommitAsync(cancellationToken);
         _logger.LogInformation($"Produto {product.Name} cadastrado com sucesso");

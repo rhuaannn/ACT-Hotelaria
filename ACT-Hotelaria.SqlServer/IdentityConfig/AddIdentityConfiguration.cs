@@ -17,6 +17,13 @@ public static class AddIdentityConfiguration
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+        
+        services.Configure<IdentityOptions>(options =>
+        {
+            options.Password.RequireUppercase = true;
+            options.Password.RequireNonAlphanumeric = true;
+            options.Password.RequiredLength =10;
+        });
             
         return services;
     }
