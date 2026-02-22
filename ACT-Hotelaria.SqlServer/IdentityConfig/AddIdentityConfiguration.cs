@@ -22,7 +22,7 @@ public static class AddIdentityConfiguration
         {
             options.Password.RequireUppercase = true;
             options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequiredLength =10;
+            options.Password.RequiredLength = 10;
         });
             
         return services;
