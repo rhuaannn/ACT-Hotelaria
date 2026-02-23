@@ -37,11 +37,13 @@ public class UserIdentityLoginUseCase : IRequestHandler<UserIdentityLoginUseCase
                                                                         false, true);
            if (!loginUser.Succeeded)
            {
+               _logger.LogWarning("Usuário ou senha inválido!");
                throw new DomainException("Dados inválidos!");
            }
 
            if (loginUser.IsLockedOut)
            {
+               _logger.LogWarning("Usuário bloqueado!");
                throw new DomainException("Usuário bloqueado por tentativas inválidas de credenciaiais");
            }
 
