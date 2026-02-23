@@ -2,7 +2,7 @@ using ACT_Hotelaria.Domain.Interface;
 
 namespace ACT_Hotelaria.Domain.Notification;
 
-public class Notifier : INotification
+public class Notifier : INotification 
 {
     private List<Notification> _notifications;
 
