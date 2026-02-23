@@ -1,5 +1,7 @@
 using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Domain.Interface;
+using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.Entities;
@@ -19,7 +21,7 @@ public sealed class Reservation : BaseEntity
     private Reservation()
     {
     }
-    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate)    {
+    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate, INotification notification) {
         
         if (clientId == Guid.Empty)
             throw new DomainException(ResourceMessages.ClienteObrigatorio);
@@ -30,13 +32,12 @@ public sealed class Reservation : BaseEntity
         Checkout = checkout;
         ClientId = clientId;
         AgreedDailyRate = agreedDailyRate;
-        
     }
 
     public static Reservation Create(Guid RoomId, DateTime checkin, DateTime checkout, 
                                      Guid clientId, decimal agreedDailyRate)
     {
-        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate);
+        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate, new Notifier());
     }
 
     internal decimal CalculateTotalPrice()

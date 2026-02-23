@@ -5,6 +5,7 @@
         <RootNamespace>ACT_Hotelaria.Domain</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -19,6 +20,10 @@
       <Reference Include="Microsoft.Extensions.Identity.Stores">
         <HintPath>..\..\..\..\..\..\usr\lib64\dotnet\shared\Microsoft.AspNetCore.App\8.0.23\Microsoft.Extensions.Identity.Stores.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.23" />
     </ItemGroup>
 
 </Project>

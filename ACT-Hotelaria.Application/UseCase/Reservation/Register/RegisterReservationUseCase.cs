@@ -1,10 +1,14 @@
+using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Enum;
 using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
  using ACT_Hotelaria.Domain.Repository.Reservation;
  using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.Message;
 using MediatR;
+using Microsoft.Extensions.Logging;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
@@ -13,15 +17,24 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
     private readonly IWriteOnlyReservationRepository _writeOnlyReservationRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyRoomRepository _readOnlyRoomRepository;
+    private readonly INotification _notification;
+    private readonly ILogger<RegisterReservationUseCase> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RegisterReservationUseCase(
         IReadOnlyClientRepository readOnlyClientRepository, 
         IWriteOnlyReservationRepository writeOnlyReservationRepository, 
+        ILogger<RegisterReservationUseCase> logger,
+        IUnitOfWork unitOfWork,
+        INotification notification,
         IReadOnlyRoomRepository readOnlyRoomRepository)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
         _writeOnlyReservationRepository = writeOnlyReservationRepository;
         _readOnlyRoomRepository = readOnlyRoomRepository;
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+        _notification = notification;
     }
 
     public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request, CancellationToken cancellationToken)
@@ -30,19 +43,23 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         var existsReservationClientPeriod = await _readOnlyClientRepository.ExistsCheckinPeriod(request.CheckIn, request.CheckOut);
         if (existsReservationClientPeriod)
         {
-            throw new DomainException("Já existe reservar para o cliente no período informado");
+            _logger.LogInformation("Já existe reserva para o cliente!");
+            _notification.Handle(new Notification("Já existe reserva para o cliente no período informado!"));
         }
         if (!client)
         {
-            throw new NotFoundException(ResourceMessages.ClienteNaoEncontrado);
+            _logger.LogWarning("Cliente não encontrado");
+            _notification.Handle(new Notification(ResourceMessages.ClienteNaoEncontrado));
         }
 
         var existsRoom = await _readOnlyRoomRepository.Exists(request.RoomId);
         
         if (!existsRoom)
         {
-            throw new DomainException("RoomId não existe!");
+            _logger.LogWarning("Room não encontrada.");
+            _notification.Handle(new Notification("Room não encontrada."));
         }
+      
         
         var room = await _readOnlyRoomRepository.GetById(request.RoomId);
         var occupiedCount = await _readOnlyRoomRepository.GetOccupancyCountAsync(
@@ -53,9 +70,10 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
 
         if ((occupiedCount + 1) > room.QtyRoom) 
         {
-            throw new DomainException("Não há disponibilidade para este período.");
+            _logger.LogInformation("Não há vagas!");
+            _notification.Handle(new Notification("Não há vagas para este período"));
         }
-
+        if(_notification.HasValidNotication()) return default;
         var reservation = Domain.Entities.Reservation.Create(
             request.RoomId,
             request.CheckIn, 
@@ -64,6 +82,8 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
             request.AgreedDailyRate);
         
         await _writeOnlyReservationRepository.Add(reservation);
+        await _unitOfWork.CommitAsync(cancellationToken);
+        _logger.LogInformation($"Reserva para o cliente {request.ClientId} realizada com sucesso!");
         
         return new RegisterReservationUseCaseResponse{
             RoomId = request.RoomId,
