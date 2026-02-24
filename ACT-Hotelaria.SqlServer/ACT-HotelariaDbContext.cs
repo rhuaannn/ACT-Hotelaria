@@ -18,8 +18,14 @@ public class ACT_HotelariaDbContext : DbContext
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        foreach (var property in builder.Model.GetEntityTypes()
+                     .SelectMany(e => e.GetProperties()
+                         .Where(p => p.ClrType == typeof(string))))
+                            property.SetColumnType("varchar(100)");
+        
         builder.HasDefaultSchema("Hotelaria");
         builder.ApplyConfigurationsFromAssembly(typeof(ACT_HotelariaDbContext).Assembly);
+        base.OnModelCreating(builder);
     }
 
 }

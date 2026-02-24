@@ -8,9 +8,7 @@ public class Consumption : BaseEntity
     public decimal UnitPrice { get; private set; }
     public Guid ReservationId { get; private set; }
     public Guid ProductId { get; private set; }
-    
     public decimal TotalValue => UnitPrice * QtyProduct;
-    
     public Reservation Reservation { get; private set; }
     public Product Product { get; private set; }
 
