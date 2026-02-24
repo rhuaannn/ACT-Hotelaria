@@ -38,7 +38,7 @@ var app = builder.Build();
 
 app.ApplyMigrations<ApplicationDbContext>();
 app.ApplyMigrations<ACT_HotelariaDbContext>();
-
+app.ApplyMigrationsAndSeed();
 app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
 if (app.Environment.IsDevelopment())

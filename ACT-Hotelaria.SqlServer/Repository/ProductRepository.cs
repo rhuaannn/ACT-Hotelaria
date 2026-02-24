@@ -36,7 +36,6 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
     public async Task Add(Product product)
     {
         _context.Products.Add(product);
-        await _context.SaveChangesAsync();
     }
 
     public Task<bool> Remove(Guid id)
@@ -47,6 +46,5 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
     public void Update(Product product)
     {
         _context.Products.Update(product);
-        _context.SaveChanges();
     }
 }

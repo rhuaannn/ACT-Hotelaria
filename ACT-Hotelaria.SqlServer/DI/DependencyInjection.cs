@@ -8,11 +8,13 @@ using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
 using ACT_Hotelaria.Domain.Repository.ProductRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Domain.Repository.RoomRepository;
+using ACT_Hotelaria.Domain.Seed;
 using ACT_Hotelaria.SqlServer.IdentityConfig;
 using ACT_Hotelaria.SqlServer.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace ACT_Hotelaria.SqlServer.DI;
 
@@ -46,7 +48,4 @@ public static class DependencyInjection
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"));
         });
     }
-
-
-
 }

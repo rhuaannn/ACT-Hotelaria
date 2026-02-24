@@ -25,11 +25,11 @@ public sealed class UnitOfWork : IUnitOfWork
         await _transaction.DisposeAsync();
         _transaction = null;
     }
-    public async Task<int> CommitAsync(CancellationToken cancellationToken = default)
+    public async Task<bool> CommitAsync(CancellationToken cancellationToken = default)
     {
         try
         {
-            var changes = await _context.SaveChangesAsync(cancellationToken);
+            var changes = await _context.SaveChangesAsync(cancellationToken) > 0;
 
             if (_transaction != null)
             {

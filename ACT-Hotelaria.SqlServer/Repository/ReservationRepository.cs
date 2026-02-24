@@ -54,7 +54,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     public async Task Add(Reservation reservation)
     {
         await _context.Reservations.AddAsync(reservation);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> Remove(Guid id)
@@ -63,7 +62,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         if (remove)
         {
             _context.Reservations.Remove(await GetAllById(id));
-            await _context.SaveChangesAsync();
             return true;
         }
 
