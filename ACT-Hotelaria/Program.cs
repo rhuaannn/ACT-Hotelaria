@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using ACT_Hotelaria.Application.DI;
 using ACT_Hotelaria.Auth.DI;
 using ACT_Hotelaria.DI;
+using ACT_Hotelaria.Domain.Interface;
+using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Extension;
 using ACT_Hotelaria.Middleware;
 using ACT_Hotelaria.Redis.DI;
@@ -26,12 +28,12 @@ builder.Services.AddRouting(options => options.LowercaseUrls = true);
 builder.Services.Configure<Settings>(
         builder.Configuration.GetSection("CacheSettings"));
 
+builder.Services.AddScoped<INotification, Notifier>();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "ACT-Hotelaria-SQLServer");
-
 var app = builder.Build();
 
 app.ApplyMigrations<ApplicationDbContext>();

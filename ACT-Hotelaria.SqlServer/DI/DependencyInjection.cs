@@ -1,4 +1,6 @@
 using ACT_Hotelaria.Domain.Abstract;
+using ACT_Hotelaria.Domain.Interface;
+using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.ConsumptionRepository.cs;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
