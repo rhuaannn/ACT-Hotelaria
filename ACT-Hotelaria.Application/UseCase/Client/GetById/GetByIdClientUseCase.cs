@@ -1,6 +1,8 @@
 using System.Text.Json;
 using ACT_Hotelaria.Application.Abstract.Query;
 using ACT_Hotelaria.Domain.Exception;
+using ACT_Hotelaria.Domain.Interface;
+using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.DependentRepository;
 using ACT_Hotelaria.Message;
@@ -12,11 +14,13 @@ public class GetByIdClientUseCase : IQueryHandler<GetByIdQueryClientUseCase, Get
 {
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly ICaching _caching;
+    private readonly INotification _notification;
     
-    public GetByIdClientUseCase(IReadOnlyClientRepository readOnlyClientRepository, ICaching caching)
+    public GetByIdClientUseCase(IReadOnlyClientRepository readOnlyClientRepository, ICaching caching, INotification notification)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
         _caching = caching;
+        _notification = notification;
     }
 
     public async Task<GetByIdClientUseCaseResponse> Handle(GetByIdQueryClientUseCase request, CancellationToken cancellationToken)
@@ -36,7 +40,7 @@ public class GetByIdClientUseCase : IQueryHandler<GetByIdQueryClientUseCase, Get
 
         if (client == null)
         {
-            throw new NotFoundException(ResourceMessages.ClienteNaoEncontrado);
+            _notification.Handle(new Notification(ResourceMessages.ClienteNaoEncontrado));
         }
 
         var response = new GetByIdClientUseCaseResponse
