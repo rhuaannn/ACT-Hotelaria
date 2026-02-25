@@ -4,10 +4,11 @@ using ACT_Hotelaria.Application.UseCase.IdentityUser.Login;
 using ACT_Hotelaria.Application.UseCase.IdentityUser.Refresh;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class AuthController(IMediator mediator) : BaseController(mediator)
+public sealed class AuthController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     [HttpPost("register")]
     [ProducesResponseType(typeof(ApiResponse<UserIdentityRegisterUseCaseResponse>), StatusCodes.Status201Created)]

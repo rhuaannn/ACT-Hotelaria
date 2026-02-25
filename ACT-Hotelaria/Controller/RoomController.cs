@@ -2,10 +2,11 @@ using ACT_Hotelaria.Application.UseCase.Room;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class RoomController(IMediator mediator) : BaseController(mediator)
+public sealed class RoomController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     private readonly RegisterRoomUseCase _registerRoomUseCase;
     

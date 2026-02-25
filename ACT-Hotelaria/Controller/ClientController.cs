@@ -6,10 +6,11 @@ using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class ClientController(IMediator mediator) : BaseController(mediator)
+public sealed class ClientController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     [HttpPost]
     [Authorize]
