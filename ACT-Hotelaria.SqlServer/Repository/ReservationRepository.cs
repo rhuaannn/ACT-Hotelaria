@@ -27,6 +27,7 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         return await _context.Reservations
             .Include(r => r.Client)
             .AsNoTracking()
+            .OrderBy(r => r.Client.Name)
             .ToListAsync();
     }
 

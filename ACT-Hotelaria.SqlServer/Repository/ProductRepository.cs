@@ -23,7 +23,7 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
 
     public async Task<IEnumerable<Product>> GetAll()
     {
-       var productAll = await _context.Products.ToListAsync();
+       var productAll = await _context.Products.OrderBy(p =>p.Name).ToListAsync();
        return productAll;
     }
 

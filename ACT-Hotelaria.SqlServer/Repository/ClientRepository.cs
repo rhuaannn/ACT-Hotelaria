@@ -30,6 +30,7 @@ public class ClientRepository : IReadOnlyClientRepository, IWriteOnlyClientRepos
             .Include(c => c.Dependents)
             .Include(c => c.Reservations)
             .AsNoTracking() 
+            .OrderBy(c => c.Name)
             .ToListAsync();        
         return clients;
          
