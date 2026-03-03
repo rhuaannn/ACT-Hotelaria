@@ -5,10 +5,11 @@ using ACT_Hotelaria.Application.UseCase.Consumption.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class ConsumptionController(IMediator mediator) : BaseController(mediator)
+public sealed class ConsumptionController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     
     [HttpPost]
@@ -17,7 +18,10 @@ public sealed class ConsumptionController(IMediator mediator) : BaseController(m
     [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterConsumption(RegisterConsumptionUseCaseRequest request, CancellationToken cancellationToken = default)
     {
-        return Ok(await _mediator.Send(request));
+        var result = await _mediator.Send(request);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
+        return Ok(ACT_Hotelaria.ApiResponse.ApiResponse<RegisterConsumptionUseCaseResponse>.SuccesResponse(result, 200));
     }
 
     [HttpGet]
@@ -28,7 +32,7 @@ public sealed class ConsumptionController(IMediator mediator) : BaseController(m
     {
         var query = new GetAllQueryConsumption();
         var result = await _mediator.Send(query);
-        return Ok(result);
+        return Ok(ACT_Hotelaria.ApiResponse.ApiResponse<IEnumerable<GetAllConsumptionUseCaseResponse>>.SuccesResponse(result, 200));
     }
 
     [HttpGet("{id}")]
@@ -39,6 +43,6 @@ public sealed class ConsumptionController(IMediator mediator) : BaseController(m
     {
         var query = new GetByIdQueryConsumption(id);
         var result = await _mediator.Send(query);
-        return Ok(result);
+        return Ok(ACT_Hotelaria.ApiResponse.ApiResponse<GetByIdConsumptionUseCaseResponse>.SuccesResponse(result, 200));
     }
 }

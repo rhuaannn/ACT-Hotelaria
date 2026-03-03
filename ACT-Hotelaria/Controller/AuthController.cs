@@ -4,10 +4,11 @@ using ACT_Hotelaria.Application.UseCase.IdentityUser.Login;
 using ACT_Hotelaria.Application.UseCase.IdentityUser.Refresh;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class AuthController(IMediator mediator) : BaseController(mediator)
+public sealed class AuthController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     [HttpPost("register")]
     [ProducesResponseType(typeof(ApiResponse<UserIdentityRegisterUseCaseResponse>), StatusCodes.Status201Created)]
@@ -16,6 +17,8 @@ public sealed class AuthController(IMediator mediator) : BaseController(mediator
     public async Task<IActionResult> RegisterUser(UserIdentityrRegisterRequest register)
     {
         var result = await _mediator.Send(register);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
         var response = ApiResponse<UserIdentityRegisterUseCaseResponse>.SuccesResponse(result, 201);
         return Created(string.Empty, response);
     }
@@ -25,6 +28,8 @@ public sealed class AuthController(IMediator mediator) : BaseController(mediator
     public async Task<IActionResult>LoginUser(UserIdentityLoginUseCaseRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(request);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
         var response = ApiResponse<UserIdentityLoginUseCaseResponse>.SuccesResponse(result, 200);
         return Ok(response);
     }
@@ -35,6 +40,8 @@ public sealed class AuthController(IMediator mediator) : BaseController(mediator
     public async Task<IActionResult> RefreshToken(RefreshTokenUseCaseRequest request)
     {
         var result = await _mediator.Send(request);
-        return Ok(result);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
+        return Ok(ApiResponse<object>.SuccesResponse(result, 200));
     }
 }

@@ -2,12 +2,12 @@ using ACT_Hotelaria.Application.UseCase.Room;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class RoomController(IMediator mediator) : BaseController(mediator)
+public sealed class RoomController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
-    private readonly RegisterRoomUseCase _registerRoomUseCase;
     
     [HttpPost]
     [Authorize]
@@ -16,6 +16,8 @@ public sealed class RoomController(IMediator mediator) : BaseController(mediator
     public async Task<IActionResult> RegisterRoom([FromBody] RegisterRoomUseCaseRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(request);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
         var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterRoomUseCaseResponse>.SuccesResponse(result, 200);
         return Created(string.Empty,response);
     }

@@ -1,12 +1,14 @@
 using ACT_Hotelaria.Application.UseCase.Product;
 using ACT_Hotelaria.Application.UseCase.Product.GetAll;
+using ACT_Hotelaria.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class ProductController(IMediator mediator) : BaseController(mediator)
+public sealed class ProductController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
 
     [HttpPost]
@@ -17,7 +19,10 @@ public sealed class ProductController(IMediator mediator) : BaseController(media
     public async Task<IActionResult> RegisterProduct(RegisterProductUseCaseRequest request, CancellationToken cancellationToken = default)
     {
         var result = await _mediator.Send(request);
-        var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterProductUseCaseResponse>.SuccesResponse(result, 200);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
+
+        var response = ACT_Hotelaria.ApiResponse.ApiResponse<RegisterProductUseCaseResponse>.SuccesResponse(result, 201);
         return Created(string.Empty, response);
     }
 

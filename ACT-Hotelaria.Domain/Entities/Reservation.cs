@@ -21,7 +21,7 @@ public sealed class Reservation : BaseEntity
     private Reservation()
     {
     }
-    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate, INotification notification) {
+    private Reservation(Guid roomId, DateTime checkin, DateTime checkout, Guid clientId, decimal agreedDailyRate) {
         
         if (clientId == Guid.Empty)
             throw new DomainException(ResourceMessages.ClienteObrigatorio);
@@ -37,7 +37,7 @@ public sealed class Reservation : BaseEntity
     public static Reservation Create(Guid RoomId, DateTime checkin, DateTime checkout, 
                                      Guid clientId, decimal agreedDailyRate)
     {
-        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate, new Notifier());
+        return new Reservation(RoomId, checkin, checkout, clientId, agreedDailyRate);
     }
 
     internal decimal CalculateTotalPrice()

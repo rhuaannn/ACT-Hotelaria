@@ -6,10 +6,11 @@ using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Controller;
 
-public sealed class ClientController(IMediator mediator) : BaseController(mediator)
+public sealed class ClientController(IMediator mediator, INotification notification) : BaseController(mediator, notification)
 {
     [HttpPost]
     [Authorize]
@@ -18,6 +19,8 @@ public sealed class ClientController(IMediator mediator) : BaseController(mediat
     public async Task<IActionResult> RegisterClient([FromBody] RegisterClientUseCaseRequest request)
     {
         var response = await _mediator.Send(request);
+        if (_notification.HasValidNotication())
+            return CustomResponse();
         return CreatedAtAction(nameof(RegisterClient), new { id = response }, response);
         
     }
