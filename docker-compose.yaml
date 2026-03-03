@@ -1,4 +1,4 @@
-﻿services:
+services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: sqlserver-act-hotelaria
@@ -26,7 +26,6 @@
     networks:
       - act-hotelaria-network
     restart: unless-stopped
-
   ACT-Hotelaria:
     build:
       context: .
@@ -37,10 +36,11 @@
       sqlserver:
         condition: service_healthy
     ports:
-      - "8080:8080"
+      - "5072:8080"
       - "8081:8081"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080 
       - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=hotelaria;User Id=sa;Password=ACT-Hotelaria2026@;TrustServerCertificate=True;
     networks:
       - act-hotelaria-network
