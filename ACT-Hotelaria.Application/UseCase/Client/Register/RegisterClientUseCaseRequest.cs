@@ -9,5 +9,6 @@ public record RegisterClientUseCaseRequest : IRequest<RegisterClientUseCaseRespo
     public string CPF { get; set; }
     public string Phone { get; set; }
     public List<CreateDependentInput> Dependents { get; set; } = new();
+    
 }
 public record CreateDependentInput(string Name, string CPF);

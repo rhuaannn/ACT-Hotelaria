@@ -1,3 +1,4 @@
+using ACT_Hotelaria.Domain.Entities;
 using FluentValidation;
 
 namespace ACT_Hotelaria.Application.UseCase.Client;

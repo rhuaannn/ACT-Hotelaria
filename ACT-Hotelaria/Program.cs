@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using ACT_Hotelaria.Application.DI;
 using ACT_Hotelaria.Auth.DI;
 using ACT_Hotelaria.DI;
+using ACT_Hotelaria.Domain.DomainNotification;
 using ACT_Hotelaria.Extension;
 using ACT_Hotelaria.Middleware;
 using ACT_Hotelaria.Redis.DI;
@@ -12,7 +13,10 @@ using ACT_Hotelaria.SqlServer.DI;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddWebApi(builder.Configuration);
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<NotificationFilter>();
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -28,6 +32,7 @@ builder.Services.Configure<Settings>(
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddScoped<NotificationContext>();
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddHealthChecks()
     .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!, name: "ACT-Hotelaria-SQLServer");
@@ -37,8 +42,8 @@ var app = builder.Build();
 app.ApplyMigrations<ApplicationDbContext>();
 app.ApplyMigrations<ACT_HotelariaDbContext>();
 
-app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 
+app.UseMiddleware<GlobalErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

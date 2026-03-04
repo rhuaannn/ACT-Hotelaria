@@ -146,5 +146,11 @@ namespace ACT_Hotelaria.Message {
                 return ResourceManager.GetString("ReservaNaoEncontrada", resourceCulture);
             }
         }
+        
+        public static string ProductNotExists {
+            get {
+                return ResourceManager.GetString("ProductNotExists", resourceCulture);
+            }
+        }
     }
 }
