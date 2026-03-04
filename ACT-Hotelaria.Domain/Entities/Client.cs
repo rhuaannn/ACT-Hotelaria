@@ -23,7 +23,6 @@ public sealed class Client : BaseEntity
     }
     private Client(string name, Cpf cpf, Email email, Telefone telefone)
     {
-        Validate(name);
         Name = name;
         CPF = cpf;
         Email = email;
@@ -45,14 +44,5 @@ public sealed class Client : BaseEntity
         
         var newDependent = Dependent.Create(name, cpf);
         _dependents.Add(newDependent);
-    }
-    private bool Validate(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name) || name.Length < 3)
-        {
-            throw new DomainException(ResourceMessages.NomeObrigatorio);
-        }
-
-        return true;
     }
 }

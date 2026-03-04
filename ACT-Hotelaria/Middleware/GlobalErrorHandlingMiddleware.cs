@@ -51,7 +51,7 @@ public class GlobalErrorHandlingMiddleware
             
             case ValidationException validationException:
                 statusCode = (int)HttpStatusCode.BadRequest;
-                message = validationException.Errors.First().ErrorMessage;
+                message = validationException.Message;
                 break;
             
             case BaseException baseException:

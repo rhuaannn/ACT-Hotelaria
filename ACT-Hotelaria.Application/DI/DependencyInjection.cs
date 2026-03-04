@@ -1,6 +1,7 @@
 using System.Net;
 using System.Reflection;
 using ACT_Hotelaria.Application.Abstract.Behavior;
+using ACT_Hotelaria.Domain.DomainNotification;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ public static class DependencyInjection
         });
 
         services.AddValidatorsFromAssembly(assembly);
+        services.AddScoped<NotificationContext>();
         return services;
     }
 }
