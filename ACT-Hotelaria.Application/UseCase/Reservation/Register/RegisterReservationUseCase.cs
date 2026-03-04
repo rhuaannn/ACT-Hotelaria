@@ -1,14 +1,11 @@
 using ACT_Hotelaria.Domain.Abstract;
-using ACT_Hotelaria.Domain.Enum;
 using ACT_Hotelaria.Domain.Exception;
-using ACT_Hotelaria.Domain.Notification;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
- using ACT_Hotelaria.Domain.Repository.Reservation;
- using ACT_Hotelaria.Domain.Repository.RoomRepository;
+using ACT_Hotelaria.Domain.Repository.Reservation;
+using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.Message;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using INotification = ACT_Hotelaria.Domain.Interface.INotification;
 
 namespace ACT_Hotelaria.Application.UseCase.Reservation;
 
@@ -17,7 +14,6 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
     private readonly IWriteOnlyReservationRepository _writeOnlyReservationRepository;
     private readonly IReadOnlyClientRepository _readOnlyClientRepository;
     private readonly IReadOnlyRoomRepository _readOnlyRoomRepository;
-    private readonly INotification _notification;
     private readonly ILogger<RegisterReservationUseCase> _logger;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -26,7 +22,6 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         IWriteOnlyReservationRepository writeOnlyReservationRepository, 
         ILogger<RegisterReservationUseCase> logger,
         IUnitOfWork unitOfWork,
-        INotification notification,
         IReadOnlyRoomRepository readOnlyRoomRepository)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
@@ -34,7 +29,6 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         _readOnlyRoomRepository = readOnlyRoomRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
-        _notification = notification;
     }
 
     public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request, CancellationToken cancellationToken)
@@ -44,12 +38,12 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         if (existsReservationClientPeriod)
         {
             _logger.LogInformation("Já existe reserva para o cliente!");
-            _notification.Handle(new Notification("Já existe reserva para o cliente no período informado!"));
+            throw new DomainException("Já existe reserva para o cliente no período informado!");
         }
         if (!client)
         {
             _logger.LogWarning("Cliente não encontrado");
-            _notification.Handle(new Notification(ResourceMessages.ClienteNaoEncontrado));
+            throw new DomainException(ResourceMessages.ClienteNaoEncontrado);
         }
 
         var existsRoom = await _readOnlyRoomRepository.Exists(request.RoomId);
@@ -57,7 +51,7 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         if (!existsRoom)
         {
             _logger.LogWarning("Room não encontrada.");
-            _notification.Handle(new Notification("Room não encontrada."));
+            throw new DomainException("Room não encontrada.");
         }
       
         
@@ -71,9 +65,8 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         if ((occupiedCount + 1) > room.QtyRoom) 
         {
             _logger.LogInformation("Não há vagas!");
-            _notification.Handle(new Notification("Não há vagas para este período"));
+           throw new DomainException("Não há vagas para este período");
         }
-        if(_notification.HasValidNotication()) return default;
         var reservation = Domain.Entities.Reservation.Create(
             request.RoomId,
             request.CheckIn, 
