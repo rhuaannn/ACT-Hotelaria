@@ -27,7 +27,8 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
         ILogger<RegisterClientUseCase> logger,
         IUnitOfWork unitOfWork,
         IValidator<RegisterClientUseCaseRequest> validator,
-        NotificationContext notificationContext)
+        NotificationContext notificationContext
+        )
     {
         _clientRepository = clientRepository;
         _readOnlyClientRepository = readOnlyClientRepository;
@@ -40,12 +41,6 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
 
     public async Task<RegisterClientUseCaseResponse?> Handle(RegisterClientUseCaseRequest request, CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (!validationResult.IsValid)
-        {
-            _notificationContext.AddNotifications(validationResult);
-        }
-
         var email = Email.Create(request.Email);
         var cpf = Cpf.Create(request.CPF);
         var telefone = Telefone.Create(request.Phone);

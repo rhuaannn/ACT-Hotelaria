@@ -38,12 +38,14 @@ public class RegisterInvoicingUseCase : IRequestHandler<RegisterInvoicingUseCase
 
     public async Task<RegisterInvoicingUseCaseResponse> Handle(RegisterInvoicingUseCaseRequest request, CancellationToken cancellationToken)
     {
+
         var reservation = await _readOnlyReservationRepository.GetAllById(request.ReservationId);
 
         if (reservation == null)
         {
             _logger.LogInformation("Reserva inexistente.");
            _notificationContext.AddNotification("Reserva:",ResourceMessages.ReservaNaoEncontrada);
+           return null;
         }
 
         if (_notificationContext.HasNotifications)
