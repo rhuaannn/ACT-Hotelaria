@@ -1,6 +1,5 @@
 using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.DomainNotification;
-using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ProductRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
@@ -67,6 +66,10 @@ public class RegisterConsumptionUseCase : IRequestHandler<RegisterConsumptionUse
         {
             _logger.LogInformation("Quantidade insuficiente no estoque.");
             _notificationContext.AddNotification("Consumption","Quantidade insuficiente no estoque.");
+            return null;
+        }
+        if(_notificationContext.HasNotifications)
+        {
             return null;
         }
         

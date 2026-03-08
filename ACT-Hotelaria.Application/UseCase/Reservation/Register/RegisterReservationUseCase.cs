@@ -1,9 +1,11 @@
 using ACT_Hotelaria.Domain.Abstract;
+using ACT_Hotelaria.Domain.DomainNotification;
 using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.ClientRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Domain.Repository.RoomRepository;
 using ACT_Hotelaria.Message;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -16,34 +18,40 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
     private readonly IReadOnlyRoomRepository _readOnlyRoomRepository;
     private readonly ILogger<RegisterReservationUseCase> _logger;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IValidator<RegisterReservationUseCaseRequest> _validator;
+    private readonly NotificationContext _notificationContext;
 
     public RegisterReservationUseCase(
         IReadOnlyClientRepository readOnlyClientRepository, 
         IWriteOnlyReservationRepository writeOnlyReservationRepository, 
         ILogger<RegisterReservationUseCase> logger,
         IUnitOfWork unitOfWork,
+        IValidator<RegisterReservationUseCaseRequest> validator,
+        NotificationContext notificationContext,
         IReadOnlyRoomRepository readOnlyRoomRepository)
     {
         _readOnlyClientRepository = readOnlyClientRepository;
         _writeOnlyReservationRepository = writeOnlyReservationRepository;
         _readOnlyRoomRepository = readOnlyRoomRepository;
         _logger = logger;
+        _validator = validator;
+        _notificationContext = notificationContext;
         _unitOfWork = unitOfWork;
     }
 
     public async Task<RegisterReservationUseCaseResponse> Handle(RegisterReservationUseCaseRequest request, CancellationToken cancellationToken)
     {
         var client = await _readOnlyClientRepository.Exists(request.ClientId);
-        var existsReservationClientPeriod = await _readOnlyClientRepository.ExistsCheckinPeriod(request.CheckIn, request.CheckOut);
-        if (existsReservationClientPeriod)
+        var existsReservationPeriod = await _readOnlyClientRepository.ExistsCheckinPeriod(request.CheckIn, request.CheckOut);
+        if (existsReservationPeriod)
         {
-            _logger.LogInformation("Já existe reserva para o cliente!");
-            throw new DomainException("Já existe reserva para o cliente no período informado!");
+            _logger.LogInformation("Já existe reserva nesse período!");
+            _notificationContext.AddNotification("ReservationPeriod","Já existe reserva para o período informado!");
         }
         if (!client)
         {
             _logger.LogWarning("Cliente não encontrado");
-            throw new DomainException(ResourceMessages.ClienteNaoEncontrado);
+            _notificationContext.AddNotification("Client not found", ResourceMessages.ClienteNaoEncontrado);
         }
 
         var existsRoom = await _readOnlyRoomRepository.Exists(request.RoomId);
@@ -51,9 +59,13 @@ public class RegisterReservationUseCase : IRequestHandler<RegisterReservationUse
         if (!existsRoom)
         {
             _logger.LogWarning("Room não encontrada.");
-            throw new DomainException("Room não encontrada.");
+           _notificationContext.AddNotification("Room not found","Room não encontrada.");
         }
-      
+
+        if (_notificationContext.HasNotifications)
+        {
+            return null;
+        }
         
         var room = await _readOnlyRoomRepository.GetById(request.RoomId);
         var occupiedCount = await _readOnlyRoomRepository.GetOccupancyCountAsync(
