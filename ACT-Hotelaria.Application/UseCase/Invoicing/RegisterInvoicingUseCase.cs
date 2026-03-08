@@ -1,8 +1,10 @@
 using ACT_Hotelaria.Domain.Abstract;
+using ACT_Hotelaria.Domain.DomainNotification;
 using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -14,17 +16,24 @@ public class RegisterInvoicingUseCase : IRequestHandler<RegisterInvoicingUseCase
     private readonly IReadOnlyReservationRepository _readOnlyReservationRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<RegisterInvoicingUseCase> _logger;
+    private readonly IValidator<RegisterInvoicingUseCaseRequest> _validator;
+    private readonly NotificationContext _notificationContext;
     
     public RegisterInvoicingUseCase(
         IWriteOnlyInvoiceRepository writeOnlyInvoiceRepository,
         ILogger<RegisterInvoicingUseCase> logger,
         IUnitOfWork unitOfWork,
-        IReadOnlyReservationRepository readOnlyReservationRepository)
+        IReadOnlyReservationRepository readOnlyReservationRepository,
+        IValidator<RegisterInvoicingUseCaseRequest> validator,
+        NotificationContext notificationContext
+        )
     {
         _writeOnlyInvoiceRepository = writeOnlyInvoiceRepository;
         _readOnlyReservationRepository = readOnlyReservationRepository;
         _logger = logger;
         _unitOfWork = unitOfWork;
+        _validator = validator;
+        _notificationContext = notificationContext;
     }
 
     public async Task<RegisterInvoicingUseCaseResponse> Handle(RegisterInvoicingUseCaseRequest request, CancellationToken cancellationToken)
@@ -34,7 +43,12 @@ public class RegisterInvoicingUseCase : IRequestHandler<RegisterInvoicingUseCase
         if (reservation == null)
         {
             _logger.LogInformation("Reserva inexistente.");
-           throw new DomainException(ResourceMessages.ReservaNaoEncontrada);
+           _notificationContext.AddNotification("Reserva:",ResourceMessages.ReservaNaoEncontrada);
+        }
+
+        if (_notificationContext.HasNotifications)
+        {
+            return null;
         }
 
         var invoice = Domain.Entities.Invoicing.Create(reservation);

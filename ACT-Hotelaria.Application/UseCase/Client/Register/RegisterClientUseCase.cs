@@ -44,7 +44,6 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
         if (!validationResult.IsValid)
         {
             _notificationContext.AddNotifications(validationResult);
-            return null; 
         }
 
         var email = Email.Create(request.Email);
@@ -54,6 +53,10 @@ public class RegisterClientUseCase : IRequestHandler<RegisterClientUseCaseReques
         if (await _readOnlyClientRepository.ExistsCpf(cpf.Value))
         {
             _notificationContext.AddNotification("CPF", ResourceMessages.CPFJaCadastrado);
+        }
+
+        if (_notificationContext.HasNotifications)
+        {
             return null;
         }
 
