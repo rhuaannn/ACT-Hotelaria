@@ -17,6 +17,17 @@ services:
       timeout: 4s
       retries: 10
       start_period: 10s
+  rabbitmq:
+    image: rabbitmq:4-management 
+    container_name: act-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - act-hotelaria-network
       
   redis:
     image: redis:7.0-alpine

@@ -15,13 +15,11 @@ public class ConsumptionRepository : IWriteOnlyConsumptionRepository, IReadOnlyC
     public async Task Add(Consumption consumption)
     {
         _context.Consumptions.Add(consumption);
-        await _context.SaveChangesAsync();
     }
 
     public void Update(Consumption consumption)
     {
          _context.Consumptions.Update(consumption);
-         _context.SaveChanges();
     }
 
     public async Task<IEnumerable<Consumption>> GetAllAsync()

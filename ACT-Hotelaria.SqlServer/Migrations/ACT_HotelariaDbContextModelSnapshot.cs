@@ -54,7 +54,7 @@ namespace ACT_Hotelaria.Infra.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("Name");
 
                     b.Property<string>("Telefone")
@@ -145,7 +145,7 @@ namespace ACT_Hotelaria.Infra.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("Name");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -225,7 +225,7 @@ namespace ACT_Hotelaria.Infra.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)")
+                        .HasColumnType("varchar(100)")
                         .HasColumnName("Nome");
 
                     b.Property<int>("QtyProduct")
@@ -321,6 +321,48 @@ namespace ACT_Hotelaria.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Quartos", "Hotelaria");
+                });
+
+            modelBuilder.Entity("ACT_Hotelaria.RabbitMq.Message.OutboxMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("ProcessedDate");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreatedAt")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Error")
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<DateTime?>("ProcessedOn")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("ProcessedOn");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("Message");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OutboxMessages", "Hotelaria");
                 });
 
             modelBuilder.Entity("ACT_Hotelaria.Domain.Entities.Consumption", b =>
