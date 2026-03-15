@@ -37,7 +37,6 @@ public sealed class UnitOfWork : IUnitOfWork
                 await _transaction.DisposeAsync();
                 _transaction = null;
             }
-
             return changes;
         }
         catch

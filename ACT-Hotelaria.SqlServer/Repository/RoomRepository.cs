@@ -47,7 +47,6 @@ public class RoomRepository : IReadOnlyRoomRepository, IWriteOnlyRoomRepository
     public async Task Add(Room room)
     {
         await _context.AddAsync(room);
-        await _context.SaveChangesAsync();
     }
 
     public Task Update(Room room)

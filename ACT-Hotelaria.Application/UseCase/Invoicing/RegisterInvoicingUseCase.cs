@@ -1,6 +1,5 @@
 using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.DomainNotification;
-using ACT_Hotelaria.Domain.Exception;
 using ACT_Hotelaria.Domain.Repository.InvoicingRepository;
 using ACT_Hotelaria.Domain.Repository.Reservation;
 using ACT_Hotelaria.Message;

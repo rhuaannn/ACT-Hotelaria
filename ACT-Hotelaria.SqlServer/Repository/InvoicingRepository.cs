@@ -15,6 +15,5 @@ public class InvoicingRepository : IWriteOnlyInvoiceRepository
     public async Task Add(Domain.Entities.Invoicing invoice)
     {
         _context.Invoicings.Add(invoice);
-        await _context.SaveChangesAsync();
     }
 }

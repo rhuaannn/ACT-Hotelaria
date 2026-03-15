@@ -39,7 +39,6 @@ public class ClientRepository : IReadOnlyClientRepository, IWriteOnlyClientRepos
     public async Task Add(Client client)
     {
         await _context.Clients.AddAsync(client);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> Remove(Guid id)

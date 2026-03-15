@@ -55,7 +55,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     public async Task Add(Reservation reservation)
     {
         await _context.Reservations.AddAsync(reservation);
-        await _context.SaveChangesAsync();
     }
 
     public async Task<bool> Remove(Guid id)
