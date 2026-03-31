@@ -60,8 +60,6 @@ public sealed class Reservation : BaseEntity
 
         var consumption = Consumption.Create(this.Id, product.Id, qtyRequested, product.ValueProduct.Value);
          _consumptions.Add(consumption);
-        
-         product.ReduceStock(qtyRequested);
     }
     
 

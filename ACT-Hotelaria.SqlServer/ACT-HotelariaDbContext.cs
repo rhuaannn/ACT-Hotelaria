@@ -1,3 +1,4 @@
+using ACT_Hotelaria.Domain.Abstract;
 using ACT_Hotelaria.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,8 +16,6 @@ public class ACT_HotelariaDbContext : DbContext
     
     public ACT_HotelariaDbContext(DbContextOptions<ACT_HotelariaDbContext> options) : base(options)
     {
-        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-        ChangeTracker.AutoDetectChangesEnabled = false;
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -25,6 +24,13 @@ public class ACT_HotelariaDbContext : DbContext
                          .Where(p => p.ClrType == typeof(string))))
                             property.SetColumnType("varchar(100)");
         
+        foreach (var entityType in builder.Model.GetEntityTypes())
+        {
+            if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+            {
+                builder.Entity(entityType.ClrType).Property("Id").ValueGeneratedNever();
+            }
+        }
         builder.HasDefaultSchema("Hotelaria");
         builder.ApplyConfigurationsFromAssembly(typeof(ACT_HotelariaDbContext).Assembly);
         base.OnModelCreating(builder);

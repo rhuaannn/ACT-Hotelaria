@@ -27,9 +27,6 @@ builder.Services.AddControllers(options =>
 builder.Services.AddRedisInfrastructure(builder.Configuration);
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-builder.Services.Configure<Settings>(
-        builder.Configuration.GetSection("CacheSettings"));
-
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddScoped<NotificationContext>();

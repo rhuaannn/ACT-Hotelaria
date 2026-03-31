@@ -16,8 +16,7 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
     public Task<Product> GetById(Guid id)
     {
         var product = _context.Products
-                                .AsNoTracking()
-                                .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.Id == id);
         return product;
     }
 
@@ -46,6 +45,5 @@ public class ProductRepository : IReadOnlyProductRepository, IWriteOnlyProductRe
     public void Update(Product product)
     {
         _context.Products.Update(product);
-        _context.SaveChanges();
     }
 }

@@ -26,7 +26,6 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
     {
         return await _context.Reservations
             .Include(r => r.Client)
-            .AsNoTracking()
             .OrderBy(r => r.Client.Name)
             .ToListAsync();
     }
@@ -63,26 +62,14 @@ public class ReservationRepository : IReadOnlyReservationRepository, IWriteOnlyR
         if (remove)
         {
             _context.Reservations.Remove(await GetAllById(id));
-            await _context.SaveChangesAsync();
             return true;
         }
 
         return false;
     }
 
-    public async Task Update(Reservation reservation)
+    public void Update(Reservation reservation)
     {
-        foreach (var consumption in reservation.Consumptions)
-        {
-            var entry = _context.Entry(consumption);
-
-            if (entry.State == EntityState.Modified || entry.State == EntityState.Detached)
-            {
-                entry.State = EntityState.Added;
-            }
-        }
-        
-        await _context.SaveChangesAsync();
-        
+         _context.Reservations.Update(reservation);
     }
 }

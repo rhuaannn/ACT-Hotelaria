@@ -1,6 +1,6 @@
 namespace ACT_Hotelaria.Application.UseCase.Consumption.GetById;
 
-public class GetByIdConsumptionUseCaseResponse
+public record GetByIdConsumptionUseCaseResponse
 {
     public Guid Id { get; set; }
     public decimal Value { get; set; }
