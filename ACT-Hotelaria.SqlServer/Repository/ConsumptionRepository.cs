@@ -25,13 +25,15 @@ public class ConsumptionRepository : IWriteOnlyConsumptionRepository, IReadOnlyC
     public async Task<IEnumerable<Consumption>> GetAllAsync()
     {
         var consumption = await _context.Consumptions
-            .Include(c => c.Reservation).ToListAsync();
+            .Include(c => c.Reservation).AsNoTracking().ToListAsync();
         return consumption;
     }
 
-    public async Task<Consumption> GetByIdAsync(Guid id)
+    public async Task<Consumption?> GetByIdAsync(Guid id)
     {
-        var consumption = await _context.Consumptions.FirstOrDefaultAsync(c => c.Id == id);
-        return consumption;
+        return await _context.Consumptions
+            .Include(c => c.Reservation)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(c => c.Id == id);
     }
 }

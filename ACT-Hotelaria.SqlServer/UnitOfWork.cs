@@ -1,4 +1,5 @@
 using ACT_Hotelaria.Domain.Abstract;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace ACT_Hotelaria.SqlServer;
