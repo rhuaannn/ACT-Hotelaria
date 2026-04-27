@@ -2,7 +2,7 @@ using ACT_Hotelaria.Domain.Abstract;
 
 namespace ACT_Hotelaria.Domain.Entities;
 
-public class Consumption : BaseEntity
+public sealed class Consumption : BaseEntity
 {
     public int QtyProduct { get; private set; }
     public decimal UnitPrice { get; private set; }

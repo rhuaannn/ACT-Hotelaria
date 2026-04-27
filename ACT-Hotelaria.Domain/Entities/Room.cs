@@ -4,7 +4,7 @@ using ACT_Hotelaria.Domain.Exception;
 
 namespace ACT_Hotelaria.Domain.Entities;
 
-public class Room : BaseEntity
+public sealed class Room : BaseEntity
 {
     private readonly List<Reservation> _reservations = new();
     public TypeRoomReservationEnum Type { get; private set; }

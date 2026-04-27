@@ -5,7 +5,7 @@ using ACT_Hotelaria.Message;
 
 namespace ACT_Hotelaria.Domain.Entities;
 
-public class Product : BaseEntity
+public sealed class Product : BaseEntity
 {
     public string Name { get; private set; }
     public int QtyProduct { get; private set; }
